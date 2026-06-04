@@ -1,0 +1,1 @@
+Info (10281): Verilog HDL Declaration information at uart_tx.v(11): object "BAUD_CNT" differs only in case from object "baud_cnt" in the same scope File: D:/Quartus24files/experiements5/uart_tx.v Line: 11

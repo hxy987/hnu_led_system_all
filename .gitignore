@@ -1,0 +1,28 @@
+# Flutter/Dart
+hnu_led_controller/.dart_tool/
+hnu_led_controller/build/
+hnu_led_controller/.flutter-plugins
+hnu_led_controller/.flutter-plugins-dependencies
+hnu_led_controller/.packages
+hnu_led_controller/.pub-cache/
+hnu_led_controller/.pub/
+hnu_led_controller/coverage/
+hnu_led_controller/*.iml
+hnu_led_controller/.idea/
+
+# Quartus
+experiements5/db/
+experiements5/incremental_db/
+experiements5/output_files/*.jdi
+experiements5/output_files/*.sld
+experiements5/*.qws
+experiements5/*.bak
+experiements5/*.summary
+experiements5/*.pin
+experiements5/*.rpt
+experiements5/simulation/
+experiements5/PLLJ_PLLSPE_INFO.txt
+
+# OS
+.DS_Store
+Thumbs.db

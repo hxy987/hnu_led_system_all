@@ -1,0 +1,1194 @@
+Timing Analyzer report for experiements5
+Wed Jun  3 11:03:38 2026
+Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Timing Analyzer Summary
+  3. Parallel Compilation
+  4. Clocks
+  5. Slow 1200mV 85C Model Fmax Summary
+  6. Timing Closure Recommendations
+  7. Slow 1200mV 85C Model Setup Summary
+  8. Slow 1200mV 85C Model Hold Summary
+  9. Slow 1200mV 85C Model Recovery Summary
+ 10. Slow 1200mV 85C Model Removal Summary
+ 11. Slow 1200mV 85C Model Minimum Pulse Width Summary
+ 12. Slow 1200mV 85C Model Setup: 'clk'
+ 13. Slow 1200mV 85C Model Hold: 'clk'
+ 14. Slow 1200mV 85C Model Metastability Summary
+ 15. Slow 1200mV 0C Model Fmax Summary
+ 16. Slow 1200mV 0C Model Setup Summary
+ 17. Slow 1200mV 0C Model Hold Summary
+ 18. Slow 1200mV 0C Model Recovery Summary
+ 19. Slow 1200mV 0C Model Removal Summary
+ 20. Slow 1200mV 0C Model Minimum Pulse Width Summary
+ 21. Slow 1200mV 0C Model Setup: 'clk'
+ 22. Slow 1200mV 0C Model Hold: 'clk'
+ 23. Slow 1200mV 0C Model Metastability Summary
+ 24. Fast 1200mV 0C Model Setup Summary
+ 25. Fast 1200mV 0C Model Hold Summary
+ 26. Fast 1200mV 0C Model Recovery Summary
+ 27. Fast 1200mV 0C Model Removal Summary
+ 28. Fast 1200mV 0C Model Minimum Pulse Width Summary
+ 29. Fast 1200mV 0C Model Setup: 'clk'
+ 30. Fast 1200mV 0C Model Hold: 'clk'
+ 31. Fast 1200mV 0C Model Metastability Summary
+ 32. Multicorner Timing Analysis Summary
+ 33. Board Trace Model Assignments
+ 34. Input Transition Times
+ 35. Signal Integrity Metrics (Slow 1200mv 0c Model)
+ 36. Signal Integrity Metrics (Slow 1200mv 85c Model)
+ 37. Signal Integrity Metrics (Fast 1200mv 0c Model)
+ 38. Setup Transfers
+ 39. Hold Transfers
+ 40. Report TCCS
+ 41. Report RSKM
+ 42. Unconstrained Paths Summary
+ 43. Clock Status Summary
+ 44. Unconstrained Input Ports
+ 45. Unconstrained Output Ports
+ 46. Unconstrained Input Ports
+ 47. Unconstrained Output Ports
+ 48. Timing Analyzer Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2025  Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Altera and sold by Altera or its authorized distributors.  Please
+refer to the Altera Software License Subscription Agreements 
+on the Quartus Prime software download page.
+
+
+
++---------------------------------------------------------------------------------+
+; Timing Analyzer Summary                                                         ;
++-----------------------+---------------------------------------------------------+
+; Quartus Prime Version ; Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
+; Timing Analyzer       ; Legacy Timing Analyzer                                  ;
+; Revision Name         ; experiements5                                           ;
+; Device Family         ; Cyclone IV E                                            ;
+; Device Name           ; EP4CE15F17C8                                            ;
+; Timing Models         ; Final                                                   ;
+; Delay Model           ; Combined                                                ;
+; Rise/Fall Delays      ; Enabled                                                 ;
++-----------------------+---------------------------------------------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 32          ;
+; Maximum allowed            ; 16          ;
+;                            ;             ;
+; Average used               ; 1.10        ;
+; Maximum used               ; 16          ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   1.3%      ;
+;     Processors 3-16        ;   0.6%      ;
++----------------------------+-------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Clocks                                                                                                                                                                          ;
++------------+------+--------+------------+-------+-------+------------+-----------+-------------+-------+--------+-----------+------------+----------+--------+--------+---------+
+; Clock Name ; Type ; Period ; Frequency  ; Rise  ; Fall  ; Duty Cycle ; Divide by ; Multiply by ; Phase ; Offset ; Edge List ; Edge Shift ; Inverted ; Master ; Source ; Targets ;
++------------+------+--------+------------+-------+-------+------------+-----------+-------------+-------+--------+-----------+------------+----------+--------+--------+---------+
+; clk        ; Base ; 1.000  ; 1000.0 MHz ; 0.000 ; 0.500 ;            ;           ;             ;       ;        ;           ;            ;          ;        ;        ; { clk } ;
++------------+------+--------+------------+-------+-------+------------+-----------+-------------+-------+--------+-----------+------------+----------+--------+--------+---------+
+
+
++--------------------------------------------------+
+; Slow 1200mV 85C Model Fmax Summary               ;
++------------+-----------------+------------+------+
+; Fmax       ; Restricted Fmax ; Clock Name ; Note ;
++------------+-----------------+------------+------+
+; 187.62 MHz ; 187.62 MHz      ; clk        ;      ;
++------------+-----------------+------------+------+
+This panel reports FMAX for every clock in the design, regardless of the user-specified clock periods.  FMAX is only computed for paths where the source and destination registers or ports are driven by the same clock.  Paths of different clocks, including generated clocks, are ignored.  For paths between a clock and its inversion, FMAX is computed as if the rising and falling edges are scaled along with FMAX, such that the duty cycle (in terms of a percentage) is maintained. Altera recommends that you always use clock constraints and other slack reports for sign-off analysis.
+
+
+----------------------------------
+; Timing Closure Recommendations ;
+----------------------------------
+HTML report is unavailable in plain text report export.
+
+
++-------------------------------------+
+; Slow 1200mV 85C Model Setup Summary ;
++-------+--------+--------------------+
+; Clock ; Slack  ; End Point TNS      ;
++-------+--------+--------------------+
+; clk   ; -4.330 ; -529.942           ;
++-------+--------+--------------------+
+
+
++------------------------------------+
+; Slow 1200mV 85C Model Hold Summary ;
++-------+-------+--------------------+
+; Clock ; Slack ; End Point TNS      ;
++-------+-------+--------------------+
+; clk   ; 0.455 ; 0.000              ;
++-------+-------+--------------------+
+
+
+------------------------------------------
+; Slow 1200mV 85C Model Recovery Summary ;
+------------------------------------------
+No paths to report.
+
+
+-----------------------------------------
+; Slow 1200mV 85C Model Removal Summary ;
+-----------------------------------------
+No paths to report.
+
+
++---------------------------------------------------+
+; Slow 1200mV 85C Model Minimum Pulse Width Summary ;
++-------+--------+----------------------------------+
+; Clock ; Slack  ; End Point TNS                    ;
++-------+--------+----------------------------------+
+; clk   ; -3.000 ; -322.705                         ;
++-------+--------+----------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Slow 1200mV 85C Model Setup: 'clk'                                                                                                                                           ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack  ; From Node                                     ; To Node                                       ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; -4.330 ; my_ws2812:u_hardware_driver|led_idx[2]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.723      ;
+; -4.311 ; my_ws2812:u_hardware_driver|data10_latched[2] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.394      ; 5.706      ;
+; -4.292 ; my_ws2812:u_hardware_driver|data10_latched[4] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.685      ;
+; -4.202 ; my_ws2812:u_hardware_driver|data10_latched[5] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.595      ;
+; -4.088 ; my_ws2812:u_hardware_driver|data10_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.394      ; 5.483      ;
+; -4.019 ; my_ws2812:u_hardware_driver|mode_latched      ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.412      ;
+; -4.019 ; my_ws2812:u_hardware_driver|data32_latched[1] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.412      ;
+; -3.975 ; my_ws2812:u_hardware_driver|data32_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.394      ; 5.370      ;
+; -3.937 ; my_ws2812:u_hardware_driver|led_idx[1]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.394      ; 5.332      ;
+; -3.888 ; my_ws2812:u_hardware_driver|data32_latched[0] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.392      ; 5.281      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.875 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.769      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.860 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.779      ;
+; -3.856 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.078     ; 4.779      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.849 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.767      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.842 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.736      ;
+; -3.823 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.078     ; 4.746      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.815 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.734      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.807 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.107     ; 4.701      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.804 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.722      ;
+; -3.788 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.078     ; 4.711      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.786 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.082     ; 4.705      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.775 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.083     ; 4.693      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[9]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[5]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[8]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[0]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[1]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[2]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[3]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[4]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[6]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[7]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[14]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[10]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[11]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[12]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[13]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.758 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[15]             ; clk          ; clk         ; 1.000        ; -0.078     ; 4.681      ;
+; -3.749 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|state.STATE_IDLE         ; clk          ; clk         ; 1.000        ; -0.078     ; 4.672      ;
+; -3.742 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|bit_cnt[2]               ; clk          ; clk         ; 1.000        ; -0.079     ; 4.664      ;
+; -3.742 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|bit_cnt[0]               ; clk          ; clk         ; 1.000        ; -0.079     ; 4.664      ;
+; -3.740 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|bit_cnt[1]               ; clk          ; clk         ; 1.000        ; -0.079     ; 4.662      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[9]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[5]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[8]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[0]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[1]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[2]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
+; -3.725 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|baud_cnt[3]              ; clk          ; clk         ; 1.000        ; -0.078     ; 4.648      ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Slow 1200mV 85C Model Hold: 'clk'                                                                                                                                                   ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack ; From Node                                         ; To Node                                           ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; 0.455 ; uart_rx:u_physics_rx|state.STATE_IDLE             ; uart_rx:u_physics_rx|state.STATE_IDLE             ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_rx:u_physics_rx|bit_cnt[1]                   ; uart_rx:u_physics_rx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_rx:u_physics_rx|bit_cnt[2]                   ; uart_rx:u_physics_rx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_rx:u_physics_rx|bit_cnt[0]                   ; uart_rx:u_physics_rx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_tx:u_physics_tx|tx_dout                      ; uart_tx:u_physics_tx|tx_dout                      ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_tx:u_physics_tx|bit_cnt[2]                   ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_tx:u_physics_tx|bit_cnt[1]                   ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|tx_busy                      ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; my_ws2812:u_hardware_driver|state                 ; my_ws2812:u_hardware_driver|state                 ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; my_ws2812:u_hardware_driver|led_idx[2]            ; my_ws2812:u_hardware_driver|led_idx[2]            ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.455 ; my_ws2812:u_hardware_driver|led_idx[0]            ; my_ws2812:u_hardware_driver|led_idx[0]            ; clk          ; clk         ; 0.000        ; 0.079      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|state.STATE_STOP             ; uart_rx:u_physics_rx|state.STATE_STOP             ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|state.STATE_START            ; uart_rx:u_physics_rx|state.STATE_START            ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|state.STATE_DATA             ; uart_rx:u_physics_rx|state.STATE_DATA             ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_tx:u_physics_tx|shift_reg[0]                 ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; effect_generator:u_effect_core|water_led_idx[2]   ; effect_generator:u_effect_core|water_led_idx[2]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; effect_generator:u_effect_core|water_led_idx[1]   ; effect_generator:u_effect_core|water_led_idx[1]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; effect_generator:u_effect_core|water_led_idx[0]   ; effect_generator:u_effect_core|water_led_idx[0]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.456 ; my_ws2812:u_hardware_driver|led_idx[1]            ; my_ws2812:u_hardware_driver|led_idx[1]            ; clk          ; clk         ; 0.000        ; 0.078      ; 0.746      ;
+; 0.467 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.079      ; 0.758      ;
+; 0.467 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.079      ; 0.758      ;
+; 0.467 ; uart_tx:u_physics_tx|bit_cnt[0]                   ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.758      ;
+; 0.468 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.078      ; 0.758      ;
+; 0.488 ; cmd_parser:u_top_fsm|state.ST_IDLE                ; cmd_parser:u_top_fsm|state.ST_CHECK               ; clk          ; clk         ; 0.000        ; 0.078      ; 0.778      ;
+; 0.503 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|SBUF_rx[5]                   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.793      ;
+; 0.503 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_TRIG_TX  ; clk          ; clk         ; 0.000        ; 0.078      ; 0.793      ;
+; 0.505 ; tx_rx_arbiter:u_system_arbiter|tx_en              ; uart_tx:u_physics_tx|tx_en_sync1                  ; clk          ; clk         ; 0.000        ; 0.078      ; 0.795      ;
+; 0.510 ; effect_generator:u_effect_core|water_speed_cnt[7] ; effect_generator:u_effect_core|water_speed_cnt[7] ; clk          ; clk         ; 0.000        ; 0.079      ; 0.801      ;
+; 0.511 ; effect_generator:u_effect_core|group_data_10[0]   ; effect_generator:u_effect_core|group_data_10[6]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.801      ;
+; 0.511 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 0.801      ;
+; 0.512 ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.802      ;
+; 0.513 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.079      ; 0.804      ;
+; 0.519 ; k_sync1                                           ; k_sync2                                           ; clk          ; clk         ; 0.000        ; 0.078      ; 0.809      ;
+; 0.520 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.078      ; 0.810      ;
+; 0.521 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.078      ; 0.811      ;
+; 0.527 ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.079      ; 0.818      ;
+; 0.530 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.079      ; 0.821      ;
+; 0.567 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.858      ;
+; 0.569 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.860      ;
+; 0.572 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.863      ;
+; 0.574 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[3]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 0.865      ;
+; 0.639 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.078      ; 0.929      ;
+; 0.697 ; effect_generator:u_effect_core|group_data_10[2]   ; effect_generator:u_effect_core|group_data_10[0]   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.987      ;
+; 0.697 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|SBUF_rx[6]                   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.987      ;
+; 0.700 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|SBUF_rx[3]                   ; clk          ; clk         ; 0.000        ; 0.078      ; 0.990      ;
+; 0.725 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|SBUF_rx[1]                   ; clk          ; clk         ; 0.000        ; 0.078      ; 1.015      ;
+; 0.727 ; effect_generator:u_effect_core|group_data_10[6]   ; effect_generator:u_effect_core|group_data_10[4]   ; clk          ; clk         ; 0.000        ; 0.078      ; 1.017      ;
+; 0.727 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|SBUF_rx[2]                   ; clk          ; clk         ; 0.000        ; 0.078      ; 1.017      ;
+; 0.739 ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.030      ;
+; 0.745 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.035      ;
+; 0.745 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.078      ; 1.035      ;
+; 0.747 ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; clk          ; clk         ; 0.000        ; 0.078      ; 1.037      ;
+; 0.747 ; uart_tx:u_physics_tx|baud_cnt[9]                  ; uart_tx:u_physics_tx|baud_cnt[9]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.037      ;
+; 0.747 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.037      ;
+; 0.747 ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.038      ;
+; 0.748 ; uart_tx:u_physics_tx|baud_cnt[1]                  ; uart_tx:u_physics_tx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.038      ;
+; 0.748 ; uart_tx:u_physics_tx|baud_cnt[3]                  ; uart_tx:u_physics_tx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.038      ;
+; 0.748 ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.039      ;
+; 0.749 ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; clk          ; clk         ; 0.000        ; 0.078      ; 1.039      ;
+; 0.749 ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; clk          ; clk         ; 0.000        ; 0.078      ; 1.039      ;
+; 0.749 ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.040      ;
+; 0.750 ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; clk          ; clk         ; 0.000        ; 0.078      ; 1.040      ;
+; 0.750 ; uart_tx:u_physics_tx|baud_cnt[4]                  ; uart_tx:u_physics_tx|baud_cnt[4]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.040      ;
+; 0.750 ; uart_tx:u_physics_tx|baud_cnt[5]                  ; uart_tx:u_physics_tx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.040      ;
+; 0.750 ; uart_tx:u_physics_tx|baud_cnt[7]                  ; uart_tx:u_physics_tx|baud_cnt[7]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.040      ;
+; 0.751 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.041      ;
+; 0.751 ; uart_tx:u_physics_tx|baud_cnt[2]                  ; uart_tx:u_physics_tx|baud_cnt[2]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.041      ;
+; 0.751 ; uart_tx:u_physics_tx|baud_cnt[8]                  ; uart_tx:u_physics_tx|baud_cnt[8]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.041      ;
+; 0.752 ; uart_tx:u_physics_tx|baud_cnt[6]                  ; uart_tx:u_physics_tx|baud_cnt[6]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.042      ;
+; 0.758 ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.049      ;
+; 0.763 ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; clk          ; clk         ; 0.000        ; 0.078      ; 1.053      ;
+; 0.763 ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.054      ;
+; 0.763 ; my_ws2812:u_hardware_driver|rst_cnt[0]            ; my_ws2812:u_hardware_driver|rst_cnt[0]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.054      ;
+; 0.764 ; uart_rx:u_physics_rx|baud_cnt[3]                  ; uart_rx:u_physics_rx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.054      ;
+; 0.764 ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; clk          ; clk         ; 0.000        ; 0.078      ; 1.054      ;
+; 0.764 ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; clk          ; clk         ; 0.000        ; 0.078      ; 1.054      ;
+; 0.764 ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; clk          ; clk         ; 0.000        ; 0.079      ; 1.055      ;
+; 0.764 ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; clk          ; clk         ; 0.000        ; 0.079      ; 1.055      ;
+; 0.764 ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.055      ;
+; 0.765 ; uart_rx:u_physics_rx|baud_cnt[5]                  ; uart_rx:u_physics_rx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.055      ;
+; 0.765 ; uart_rx:u_physics_rx|baud_cnt[1]                  ; uart_rx:u_physics_rx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.078      ; 1.055      ;
+; 0.765 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.055      ;
+; 0.765 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.055      ;
+; 0.765 ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; clk          ; clk         ; 0.000        ; 0.079      ; 1.056      ;
+; 0.765 ; my_ws2812:u_hardware_driver|bit_cnt[1]            ; my_ws2812:u_hardware_driver|bit_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.079      ; 1.056      ;
+; 0.765 ; uart_tx:u_physics_tx|bit_cnt[0]                   ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.079      ; 1.056      ;
+; 0.766 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; clk          ; clk         ; 0.000        ; 0.078      ; 1.056      ;
+; 0.766 ; effect_generator:u_effect_core|water_speed_cnt[1] ; effect_generator:u_effect_core|water_speed_cnt[1] ; clk          ; clk         ; 0.000        ; 0.079      ; 1.057      ;
+; 0.766 ; effect_generator:u_effect_core|water_speed_cnt[3] ; effect_generator:u_effect_core|water_speed_cnt[3] ; clk          ; clk         ; 0.000        ; 0.079      ; 1.057      ;
+; 0.766 ; effect_generator:u_effect_core|water_speed_cnt[4] ; effect_generator:u_effect_core|water_speed_cnt[4] ; clk          ; clk         ; 0.000        ; 0.079      ; 1.057      ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
+-----------------------------------------------
+; Slow 1200mV 85C Model Metastability Summary ;
+-----------------------------------------------
+Design MTBF is not calculated because the design doesn't meet its timing requirements.
+
+
+
++-------------------------------------------------+
+; Slow 1200mV 0C Model Fmax Summary               ;
++-----------+-----------------+------------+------+
+; Fmax      ; Restricted Fmax ; Clock Name ; Note ;
++-----------+-----------------+------------+------+
+; 197.2 MHz ; 197.2 MHz       ; clk        ;      ;
++-----------+-----------------+------------+------+
+This panel reports FMAX for every clock in the design, regardless of the user-specified clock periods.  FMAX is only computed for paths where the source and destination registers or ports are driven by the same clock.  Paths of different clocks, including generated clocks, are ignored.  For paths between a clock and its inversion, FMAX is computed as if the rising and falling edges are scaled along with FMAX, such that the duty cycle (in terms of a percentage) is maintained. Altera recommends that you always use clock constraints and other slack reports for sign-off analysis.
+
+
++------------------------------------+
+; Slow 1200mV 0C Model Setup Summary ;
++-------+--------+-------------------+
+; Clock ; Slack  ; End Point TNS     ;
++-------+--------+-------------------+
+; clk   ; -4.071 ; -479.244          ;
++-------+--------+-------------------+
+
+
++-----------------------------------+
+; Slow 1200mV 0C Model Hold Summary ;
++-------+-------+-------------------+
+; Clock ; Slack ; End Point TNS     ;
++-------+-------+-------------------+
+; clk   ; 0.402 ; 0.000             ;
++-------+-------+-------------------+
+
+
+-----------------------------------------
+; Slow 1200mV 0C Model Recovery Summary ;
+-----------------------------------------
+No paths to report.
+
+
+----------------------------------------
+; Slow 1200mV 0C Model Removal Summary ;
+----------------------------------------
+No paths to report.
+
+
++--------------------------------------------------+
+; Slow 1200mV 0C Model Minimum Pulse Width Summary ;
++-------+--------+---------------------------------+
+; Clock ; Slack  ; End Point TNS                   ;
++-------+--------+---------------------------------+
+; clk   ; -3.000 ; -322.705                        ;
++-------+--------+---------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Slow 1200mV 0C Model Setup: 'clk'                                                                                                                                            ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack  ; From Node                                     ; To Node                                       ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; -4.071 ; my_ws2812:u_hardware_driver|data10_latched[2] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.375      ; 5.448      ;
+; -4.028 ; my_ws2812:u_hardware_driver|data10_latched[4] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.404      ;
+; -4.012 ; my_ws2812:u_hardware_driver|led_idx[2]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.388      ;
+; -3.922 ; my_ws2812:u_hardware_driver|data10_latched[5] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.298      ;
+; -3.852 ; my_ws2812:u_hardware_driver|data10_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.375      ; 5.229      ;
+; -3.781 ; my_ws2812:u_hardware_driver|mode_latched      ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.157      ;
+; -3.771 ; my_ws2812:u_hardware_driver|data32_latched[1] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.147      ;
+; -3.733 ; my_ws2812:u_hardware_driver|data32_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.375      ; 5.110      ;
+; -3.696 ; my_ws2812:u_hardware_driver|led_idx[1]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.375      ; 5.073      ;
+; -3.628 ; my_ws2812:u_hardware_driver|data32_latched[0] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.374      ; 5.004      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.608 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.514      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.597 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.503      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.570 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.096     ; 4.476      ;
+; -3.520 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.071     ; 4.451      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.511 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.437      ;
+; -3.509 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.071     ; 4.440      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.501 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.426      ;
+; -3.486 ; my_ws2812:u_hardware_driver|data32_latched[2] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.375      ; 4.863      ;
+; -3.482 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.071     ; 4.413      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.478 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.404      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.468 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.077     ; 4.393      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[9]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[5]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[8]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[0]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[1]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[2]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[3]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[4]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[6]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[7]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[14]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[10]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[11]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[12]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[13]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.459 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|baud_cnt[15]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.390      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[9]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[5]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[8]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[0]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[1]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[2]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[3]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[4]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[6]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[7]              ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[14]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[10]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[11]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[12]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[13]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.448 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|baud_cnt[15]             ; clk          ; clk         ; 1.000        ; -0.071     ; 4.379      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
+; -3.440 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.076     ; 4.366      ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Slow 1200mV 0C Model Hold: 'clk'                                                                                                                                                    ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack ; From Node                                         ; To Node                                           ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; 0.402 ; uart_rx:u_physics_rx|state.STATE_STOP             ; uart_rx:u_physics_rx|state.STATE_STOP             ; clk          ; clk         ; 0.000        ; 0.072      ; 0.669      ;
+; 0.402 ; uart_rx:u_physics_rx|state.STATE_START            ; uart_rx:u_physics_rx|state.STATE_START            ; clk          ; clk         ; 0.000        ; 0.072      ; 0.669      ;
+; 0.402 ; uart_rx:u_physics_rx|state.STATE_DATA             ; uart_rx:u_physics_rx|state.STATE_DATA             ; clk          ; clk         ; 0.000        ; 0.072      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|state.STATE_IDLE             ; uart_rx:u_physics_rx|state.STATE_IDLE             ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|bit_cnt[1]                   ; uart_rx:u_physics_rx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|bit_cnt[2]                   ; uart_rx:u_physics_rx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|bit_cnt[0]                   ; uart_rx:u_physics_rx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_tx:u_physics_tx|tx_dout                      ; uart_tx:u_physics_tx|tx_dout                      ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; effect_generator:u_effect_core|water_led_idx[2]   ; effect_generator:u_effect_core|water_led_idx[2]   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; effect_generator:u_effect_core|water_led_idx[1]   ; effect_generator:u_effect_core|water_led_idx[1]   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; effect_generator:u_effect_core|water_led_idx[0]   ; effect_generator:u_effect_core|water_led_idx[0]   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_tx:u_physics_tx|bit_cnt[2]                   ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_tx:u_physics_tx|bit_cnt[1]                   ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|tx_busy                      ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; my_ws2812:u_hardware_driver|state                 ; my_ws2812:u_hardware_driver|state                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; my_ws2812:u_hardware_driver|led_idx[2]            ; my_ws2812:u_hardware_driver|led_idx[2]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; my_ws2812:u_hardware_driver|led_idx[0]            ; my_ws2812:u_hardware_driver|led_idx[0]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.403 ; my_ws2812:u_hardware_driver|led_idx[1]            ; my_ws2812:u_hardware_driver|led_idx[1]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.669      ;
+; 0.404 ; uart_tx:u_physics_tx|shift_reg[0]                 ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.070      ; 0.669      ;
+; 0.404 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.070      ; 0.669      ;
+; 0.404 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; clk          ; clk         ; 0.000        ; 0.070      ; 0.669      ;
+; 0.418 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.684      ;
+; 0.418 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.684      ;
+; 0.418 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.071      ; 0.684      ;
+; 0.418 ; uart_tx:u_physics_tx|bit_cnt[0]                   ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.684      ;
+; 0.452 ; cmd_parser:u_top_fsm|state.ST_IDLE                ; cmd_parser:u_top_fsm|state.ST_CHECK               ; clk          ; clk         ; 0.000        ; 0.070      ; 0.717      ;
+; 0.463 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_TRIG_TX  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.729      ;
+; 0.470 ; effect_generator:u_effect_core|water_speed_cnt[7] ; effect_generator:u_effect_core|water_speed_cnt[7] ; clk          ; clk         ; 0.000        ; 0.071      ; 0.736      ;
+; 0.470 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.736      ;
+; 0.471 ; effect_generator:u_effect_core|group_data_10[0]   ; effect_generator:u_effect_core|group_data_10[6]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.736      ;
+; 0.471 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|SBUF_rx[5]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.737      ;
+; 0.472 ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.737      ;
+; 0.473 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.739      ;
+; 0.474 ; tx_rx_arbiter:u_system_arbiter|tx_en              ; uart_tx:u_physics_tx|tx_en_sync1                  ; clk          ; clk         ; 0.000        ; 0.070      ; 0.739      ;
+; 0.485 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.071      ; 0.751      ;
+; 0.486 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.752      ;
+; 0.486 ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.752      ;
+; 0.488 ; k_sync1                                           ; k_sync2                                           ; clk          ; clk         ; 0.000        ; 0.070      ; 0.753      ;
+; 0.495 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.761      ;
+; 0.527 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.793      ;
+; 0.528 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.794      ;
+; 0.532 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.798      ;
+; 0.533 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[3]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.799      ;
+; 0.592 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.858      ;
+; 0.621 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|SBUF_rx[6]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.887      ;
+; 0.624 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|SBUF_rx[3]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.890      ;
+; 0.644 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|SBUF_rx[1]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.910      ;
+; 0.646 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|SBUF_rx[2]                   ; clk          ; clk         ; 0.000        ; 0.071      ; 0.912      ;
+; 0.648 ; effect_generator:u_effect_core|group_data_10[2]   ; effect_generator:u_effect_core|group_data_10[0]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.913      ;
+; 0.670 ; effect_generator:u_effect_core|group_data_10[6]   ; effect_generator:u_effect_core|group_data_10[4]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.935      ;
+; 0.687 ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.953      ;
+; 0.693 ; uart_tx:u_physics_tx|baud_cnt[1]                  ; uart_tx:u_physics_tx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.959      ;
+; 0.693 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.959      ;
+; 0.693 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.070      ; 0.958      ;
+; 0.693 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.070      ; 0.958      ;
+; 0.694 ; uart_tx:u_physics_tx|baud_cnt[9]                  ; uart_tx:u_physics_tx|baud_cnt[9]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.960      ;
+; 0.695 ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; clk          ; clk         ; 0.000        ; 0.070      ; 0.960      ;
+; 0.695 ; uart_tx:u_physics_tx|baud_cnt[3]                  ; uart_tx:u_physics_tx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.961      ;
+; 0.695 ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.961      ;
+; 0.696 ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; clk          ; clk         ; 0.000        ; 0.070      ; 0.961      ;
+; 0.696 ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.962      ;
+; 0.696 ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.962      ;
+; 0.697 ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; clk          ; clk         ; 0.000        ; 0.070      ; 0.962      ;
+; 0.697 ; uart_tx:u_physics_tx|baud_cnt[4]                  ; uart_tx:u_physics_tx|baud_cnt[4]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.963      ;
+; 0.697 ; uart_tx:u_physics_tx|baud_cnt[5]                  ; uart_tx:u_physics_tx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.963      ;
+; 0.698 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.964      ;
+; 0.698 ; uart_tx:u_physics_tx|baud_cnt[7]                  ; uart_tx:u_physics_tx|baud_cnt[7]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.964      ;
+; 0.699 ; uart_tx:u_physics_tx|baud_cnt[6]                  ; uart_tx:u_physics_tx|baud_cnt[6]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.965      ;
+; 0.700 ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; clk          ; clk         ; 0.000        ; 0.070      ; 0.965      ;
+; 0.700 ; uart_tx:u_physics_tx|baud_cnt[2]                  ; uart_tx:u_physics_tx|baud_cnt[2]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.966      ;
+; 0.700 ; uart_tx:u_physics_tx|baud_cnt[8]                  ; uart_tx:u_physics_tx|baud_cnt[8]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.966      ;
+; 0.707 ; uart_rx:u_physics_rx|baud_cnt[5]                  ; uart_rx:u_physics_rx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.707 ; uart_rx:u_physics_rx|baud_cnt[3]                  ; uart_rx:u_physics_rx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.707 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.707 ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.972      ;
+; 0.707 ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; clk          ; clk         ; 0.000        ; 0.070      ; 0.972      ;
+; 0.707 ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.707 ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.707 ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.973      ;
+; 0.708 ; uart_rx:u_physics_rx|baud_cnt[1]                  ; uart_rx:u_physics_rx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.974      ;
+; 0.708 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.974      ;
+; 0.708 ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.973      ;
+; 0.708 ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; clk          ; clk         ; 0.000        ; 0.071      ; 0.974      ;
+; 0.709 ; uart_rx:u_physics_rx|baud_cnt[6]                  ; uart_rx:u_physics_rx|baud_cnt[6]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.975      ;
+; 0.709 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; clk          ; clk         ; 0.000        ; 0.071      ; 0.975      ;
+; 0.709 ; effect_generator:u_effect_core|anim_clk_cnt[23]   ; effect_generator:u_effect_core|anim_clk_cnt[23]   ; clk          ; clk         ; 0.000        ; 0.070      ; 0.974      ;
+; 0.709 ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; clk          ; clk         ; 0.000        ; 0.071      ; 0.975      ;
+; 0.709 ; my_ws2812:u_hardware_driver|rst_cnt[6]            ; my_ws2812:u_hardware_driver|rst_cnt[6]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.975      ;
+; 0.709 ; my_ws2812:u_hardware_driver|bit_cnt[1]            ; my_ws2812:u_hardware_driver|bit_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.070      ; 0.974      ;
+; 0.709 ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; clk          ; clk         ; 0.000        ; 0.071      ; 0.975      ;
+; 0.710 ; uart_rx:u_physics_rx|baud_cnt[9]                  ; uart_rx:u_physics_rx|baud_cnt[9]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.976      ;
+; 0.710 ; uart_rx:u_physics_rx|baud_cnt[7]                  ; uart_rx:u_physics_rx|baud_cnt[7]                  ; clk          ; clk         ; 0.000        ; 0.071      ; 0.976      ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
+----------------------------------------------
+; Slow 1200mV 0C Model Metastability Summary ;
+----------------------------------------------
+Design MTBF is not calculated because the design doesn't meet its timing requirements.
+
+
+
++------------------------------------+
+; Fast 1200mV 0C Model Setup Summary ;
++-------+--------+-------------------+
+; Clock ; Slack  ; End Point TNS     ;
++-------+--------+-------------------+
+; clk   ; -1.356 ; -112.260          ;
++-------+--------+-------------------+
+
+
++-----------------------------------+
+; Fast 1200mV 0C Model Hold Summary ;
++-------+-------+-------------------+
+; Clock ; Slack ; End Point TNS     ;
++-------+-------+-------------------+
+; clk   ; 0.187 ; 0.000             ;
++-------+-------+-------------------+
+
+
+-----------------------------------------
+; Fast 1200mV 0C Model Recovery Summary ;
+-----------------------------------------
+No paths to report.
+
+
+----------------------------------------
+; Fast 1200mV 0C Model Removal Summary ;
+----------------------------------------
+No paths to report.
+
+
++--------------------------------------------------+
+; Fast 1200mV 0C Model Minimum Pulse Width Summary ;
++-------+--------+---------------------------------+
+; Clock ; Slack  ; End Point TNS                   ;
++-------+--------+---------------------------------+
+; clk   ; -3.000 ; -230.040                        ;
++-------+--------+---------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Fast 1200mV 0C Model Setup: 'clk'                                                                                                                                            ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack  ; From Node                                     ; To Node                                       ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+; -1.356 ; my_ws2812:u_hardware_driver|data10_latched[4] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.496      ;
+; -1.335 ; my_ws2812:u_hardware_driver|data10_latched[2] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.155      ; 2.477      ;
+; -1.297 ; my_ws2812:u_hardware_driver|led_idx[2]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.437      ;
+; -1.282 ; my_ws2812:u_hardware_driver|data10_latched[5] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.422      ;
+; -1.226 ; my_ws2812:u_hardware_driver|mode_latched      ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.366      ;
+; -1.211 ; my_ws2812:u_hardware_driver|data32_latched[1] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.351      ;
+; -1.166 ; my_ws2812:u_hardware_driver|data10_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.155      ; 2.308      ;
+; -1.164 ; my_ws2812:u_hardware_driver|data32_latched[3] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.155      ; 2.306      ;
+; -1.162 ; my_ws2812:u_hardware_driver|led_idx[1]        ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.155      ; 2.304      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.088 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.039      ;
+; -1.077 ; my_ws2812:u_hardware_driver|data32_latched[0] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.217      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.073 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.024      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.065 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 2.016      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.057 ; my_ws2812:u_hardware_driver|rst_cnt[5]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 2.006      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.048 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.983      ;
+; -1.047 ; my_ws2812:u_hardware_driver|data32_latched[2] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.155      ; 2.189      ;
+; -1.044 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.036     ; 1.995      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.042 ; my_ws2812:u_hardware_driver|rst_cnt[14]       ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.991      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[6] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[7] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data32_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[3] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.034 ; my_ws2812:u_hardware_driver|rst_cnt[3]        ; my_ws2812:u_hardware_driver|data10_latched[2] ; clk          ; clk         ; 1.000        ; -0.038     ; 1.983      ;
+; -1.031 ; my_ws2812:u_hardware_driver|data10_latched[1] ; my_ws2812:u_hardware_driver|led_out           ; clk          ; clk         ; 1.000        ; 0.153      ; 2.171      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.025 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.960      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|state.STATE_IDLE         ; clk          ; clk         ; 1.000        ; -0.036     ; 1.973      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.022 ; uart_rx:u_physics_rx|baud_cnt[6]              ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.957      ;
+; -1.021 ; uart_rx:u_physics_rx|baud_cnt[10]             ; uart_rx:u_physics_rx|state.STATE_DATA         ; clk          ; clk         ; 1.000        ; -0.036     ; 1.972      ;
+; -1.013 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|bit_cnt[2]               ; clk          ; clk         ; 1.000        ; -0.037     ; 1.963      ;
+; -1.011 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|bit_cnt[1]               ; clk          ; clk         ; 1.000        ; -0.037     ; 1.961      ;
+; -1.011 ; uart_rx:u_physics_rx|baud_cnt[7]              ; uart_rx:u_physics_rx|bit_cnt[0]               ; clk          ; clk         ; 1.000        ; -0.037     ; 1.961      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.009 ; uart_rx:u_physics_rx|baud_cnt[3]              ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.944      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data10_latched[4] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data10_latched[5] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data32_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data10_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data10_latched[1] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; my_ws2812:u_hardware_driver|rst_cnt[9]        ; my_ws2812:u_hardware_driver|data32_latched[0] ; clk          ; clk         ; 1.000        ; -0.036     ; 1.957      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[3]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[0]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[2]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[1]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[4]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[6]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[5]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
+; -1.006 ; uart_rx:u_physics_rx|baud_cnt[11]             ; uart_rx:u_physics_rx|SBUF_rx[7]               ; clk          ; clk         ; 1.000        ; -0.052     ; 1.941      ;
++--------+-----------------------------------------------+-----------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Fast 1200mV 0C Model Hold: 'clk'                                                                                                                                                    ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack ; From Node                                         ; To Node                                           ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; 0.187 ; uart_rx:u_physics_rx|state.STATE_STOP             ; uart_rx:u_physics_rx|state.STATE_STOP             ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|state.STATE_IDLE             ; uart_rx:u_physics_rx|state.STATE_IDLE             ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|state.STATE_START            ; uart_rx:u_physics_rx|state.STATE_START            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|state.STATE_DATA             ; uart_rx:u_physics_rx|state.STATE_DATA             ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|bit_cnt[1]                   ; uart_rx:u_physics_rx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|bit_cnt[2]                   ; uart_rx:u_physics_rx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|bit_cnt[0]                   ; uart_rx:u_physics_rx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_tx:u_physics_tx|shift_reg[0]                 ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; effect_generator:u_effect_core|water_led_idx[2]   ; effect_generator:u_effect_core|water_led_idx[2]   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; effect_generator:u_effect_core|water_led_idx[1]   ; effect_generator:u_effect_core|water_led_idx[1]   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; effect_generator:u_effect_core|water_led_idx[0]   ; effect_generator:u_effect_core|water_led_idx[0]   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; uart_rx:u_physics_rx|rx_data_r[7]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; uart_rx:u_physics_rx|rx_data_r[4]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; uart_rx:u_physics_rx|rx_data_r[0]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.187 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.307      ;
+; 0.188 ; uart_tx:u_physics_tx|tx_dout                      ; uart_tx:u_physics_tx|tx_dout                      ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; uart_tx:u_physics_tx|bit_cnt[2]                   ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; uart_tx:u_physics_tx|bit_cnt[1]                   ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|tx_busy                      ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; my_ws2812:u_hardware_driver|state                 ; my_ws2812:u_hardware_driver|state                 ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; my_ws2812:u_hardware_driver|led_idx[2]            ; my_ws2812:u_hardware_driver|led_idx[2]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; my_ws2812:u_hardware_driver|led_idx[0]            ; my_ws2812:u_hardware_driver|led_idx[0]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.188 ; my_ws2812:u_hardware_driver|led_idx[1]            ; my_ws2812:u_hardware_driver|led_idx[1]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.307      ;
+; 0.194 ; uart_rx:u_physics_rx|rx_data_r[5]                 ; uart_rx:u_physics_rx|SBUF_rx[5]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.314      ;
+; 0.194 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.036      ; 0.314      ;
+; 0.195 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.314      ;
+; 0.195 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.314      ;
+; 0.195 ; uart_tx:u_physics_tx|bit_cnt[0]                   ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.314      ;
+; 0.195 ; tx_rx_arbiter:u_system_arbiter|tx_en              ; uart_tx:u_physics_tx|tx_en_sync1                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.315      ;
+; 0.200 ; cmd_parser:u_top_fsm|state.ST_IDLE                ; cmd_parser:u_top_fsm|state.ST_CHECK               ; clk          ; clk         ; 0.000        ; 0.036      ; 0.320      ;
+; 0.201 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; clk          ; clk         ; 0.000        ; 0.036      ; 0.321      ;
+; 0.202 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.322      ;
+; 0.202 ; k_sync1                                           ; k_sync2                                           ; clk          ; clk         ; 0.000        ; 0.036      ; 0.322      ;
+; 0.205 ; effect_generator:u_effect_core|water_speed_cnt[7] ; effect_generator:u_effect_core|water_speed_cnt[7] ; clk          ; clk         ; 0.000        ; 0.035      ; 0.324      ;
+; 0.205 ; uart_rx:u_physics_rx|rx_ready                     ; tx_rx_arbiter:u_system_arbiter|state.ARB_TRIG_TX  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.325      ;
+; 0.205 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; uart_tx:u_physics_tx|baud_cnt[12]                 ; clk          ; clk         ; 0.000        ; 0.035      ; 0.324      ;
+; 0.206 ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; effect_generator:u_effect_core|anim_clk_cnt[24]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.325      ;
+; 0.208 ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.327      ;
+; 0.209 ; effect_generator:u_effect_core|group_data_10[0]   ; effect_generator:u_effect_core|group_data_10[6]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.328      ;
+; 0.212 ; cmd_parser:u_top_fsm|byte_cnt[1]                  ; cmd_parser:u_top_fsm|byte_cnt[0]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.331      ;
+; 0.214 ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; my_ws2812:u_hardware_driver|clk_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.333      ;
+; 0.225 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[0]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.344      ;
+; 0.226 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[1]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.345      ;
+; 0.229 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[2]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.348      ;
+; 0.230 ; uart_tx:u_physics_tx|tx_busy                      ; uart_tx:u_physics_tx|bit_cnt[3]                   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.349      ;
+; 0.259 ; tx_rx_arbiter:u_system_arbiter|state.ARB_IDLE     ; tx_rx_arbiter:u_system_arbiter|state.ARB_PRIO_RX  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.379      ;
+; 0.262 ; uart_rx:u_physics_rx|rx_data_r[6]                 ; uart_rx:u_physics_rx|SBUF_rx[6]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.382      ;
+; 0.263 ; uart_rx:u_physics_rx|rx_data_r[3]                 ; uart_rx:u_physics_rx|SBUF_rx[3]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.383      ;
+; 0.271 ; uart_rx:u_physics_rx|rx_data_r[1]                 ; uart_rx:u_physics_rx|SBUF_rx[1]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.391      ;
+; 0.272 ; uart_rx:u_physics_rx|rx_data_r[2]                 ; uart_rx:u_physics_rx|SBUF_rx[2]                   ; clk          ; clk         ; 0.000        ; 0.036      ; 0.392      ;
+; 0.280 ; effect_generator:u_effect_core|group_data_10[6]   ; effect_generator:u_effect_core|group_data_10[4]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.399      ;
+; 0.280 ; effect_generator:u_effect_core|group_data_10[2]   ; effect_generator:u_effect_core|group_data_10[0]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.399      ;
+; 0.294 ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; my_ws2812:u_hardware_driver|rst_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.414      ;
+; 0.295 ; tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; clk          ; clk         ; 0.000        ; 0.036      ; 0.415      ;
+; 0.296 ; tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ; uart_tx:u_physics_tx|shift_reg[0]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.416      ;
+; 0.298 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; uart_tx:u_physics_tx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.035      ; 0.417      ;
+; 0.299 ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; effect_generator:u_effect_core|anim_clk_cnt[2]    ; clk          ; clk         ; 0.000        ; 0.035      ; 0.418      ;
+; 0.299 ; uart_tx:u_physics_tx|baud_cnt[1]                  ; uart_tx:u_physics_tx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.418      ;
+; 0.300 ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; effect_generator:u_effect_core|anim_clk_cnt[3]    ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; effect_generator:u_effect_core|anim_clk_cnt[1]    ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; uart_tx:u_physics_tx|baud_cnt[3]                  ; uart_tx:u_physics_tx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; uart_tx:u_physics_tx|baud_cnt[4]                  ; uart_tx:u_physics_tx|baud_cnt[4]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; uart_tx:u_physics_tx|baud_cnt[5]                  ; uart_tx:u_physics_tx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; uart_tx:u_physics_tx|baud_cnt[9]                  ; uart_tx:u_physics_tx|baud_cnt[9]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; my_ws2812:u_hardware_driver|clk_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.300 ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; my_ws2812:u_hardware_driver|clk_cnt[2]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.419      ;
+; 0.301 ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; effect_generator:u_effect_core|anim_clk_cnt[4]    ; clk          ; clk         ; 0.000        ; 0.035      ; 0.420      ;
+; 0.301 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; uart_tx:u_physics_tx|baud_cnt[10]                 ; clk          ; clk         ; 0.000        ; 0.035      ; 0.420      ;
+; 0.301 ; uart_tx:u_physics_tx|baud_cnt[6]                  ; uart_tx:u_physics_tx|baud_cnt[6]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.420      ;
+; 0.301 ; uart_tx:u_physics_tx|baud_cnt[7]                  ; uart_tx:u_physics_tx|baud_cnt[7]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.420      ;
+; 0.301 ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; my_ws2812:u_hardware_driver|clk_cnt[1]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.420      ;
+; 0.302 ; uart_tx:u_physics_tx|baud_cnt[2]                  ; uart_tx:u_physics_tx|baud_cnt[2]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.421      ;
+; 0.302 ; uart_tx:u_physics_tx|baud_cnt[8]                  ; uart_tx:u_physics_tx|baud_cnt[8]                  ; clk          ; clk         ; 0.000        ; 0.035      ; 0.421      ;
+; 0.304 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; uart_rx:u_physics_rx|baud_cnt[15]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.424      ;
+; 0.304 ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; effect_generator:u_effect_core|anim_clk_cnt[11]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.423      ;
+; 0.304 ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; my_ws2812:u_hardware_driver|rst_cnt[15]           ; clk          ; clk         ; 0.000        ; 0.036      ; 0.424      ;
+; 0.305 ; uart_rx:u_physics_rx|baud_cnt[5]                  ; uart_rx:u_physics_rx|baud_cnt[5]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; uart_rx:u_physics_rx|baud_cnt[1]                  ; uart_rx:u_physics_rx|baud_cnt[1]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; uart_rx:u_physics_rx|baud_cnt[3]                  ; uart_rx:u_physics_rx|baud_cnt[3]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; uart_rx:u_physics_rx|baud_cnt[11]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; uart_rx:u_physics_rx|baud_cnt[13]                 ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; effect_generator:u_effect_core|anim_clk_cnt[9]    ; clk          ; clk         ; 0.000        ; 0.035      ; 0.424      ;
+; 0.305 ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; my_ws2812:u_hardware_driver|rst_cnt[13]           ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; my_ws2812:u_hardware_driver|rst_cnt[11]           ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; my_ws2812:u_hardware_driver|rst_cnt[5]            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; my_ws2812:u_hardware_driver|rst_cnt[3]            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; my_ws2812:u_hardware_driver|rst_cnt[0]            ; my_ws2812:u_hardware_driver|rst_cnt[0]            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.425      ;
+; 0.305 ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; my_ws2812:u_hardware_driver|clk_cnt[0]            ; clk          ; clk         ; 0.000        ; 0.035      ; 0.424      ;
+; 0.306 ; uart_rx:u_physics_rx|baud_cnt[9]                  ; uart_rx:u_physics_rx|baud_cnt[9]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.426      ;
+; 0.306 ; uart_rx:u_physics_rx|baud_cnt[6]                  ; uart_rx:u_physics_rx|baud_cnt[6]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.426      ;
+; 0.306 ; uart_rx:u_physics_rx|baud_cnt[7]                  ; uart_rx:u_physics_rx|baud_cnt[7]                  ; clk          ; clk         ; 0.000        ; 0.036      ; 0.426      ;
+; 0.306 ; effect_generator:u_effect_core|anim_clk_cnt[23]   ; effect_generator:u_effect_core|anim_clk_cnt[23]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.425      ;
+; 0.306 ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; effect_generator:u_effect_core|anim_clk_cnt[15]   ; clk          ; clk         ; 0.000        ; 0.035      ; 0.425      ;
+; 0.306 ; my_ws2812:u_hardware_driver|rst_cnt[9]            ; my_ws2812:u_hardware_driver|rst_cnt[9]            ; clk          ; clk         ; 0.000        ; 0.036      ; 0.426      ;
++-------+---------------------------------------------------+---------------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+
+----------------------------------------------
+; Fast 1200mV 0C Model Metastability Summary ;
+----------------------------------------------
+Design MTBF is not calculated because the design doesn't meet its timing requirements.
+
+
+
++--------------------------------------------------------------------------------+
+; Multicorner Timing Analysis Summary                                            ;
++------------------+----------+-------+----------+---------+---------------------+
+; Clock            ; Setup    ; Hold  ; Recovery ; Removal ; Minimum Pulse Width ;
++------------------+----------+-------+----------+---------+---------------------+
+; Worst-case Slack ; -4.330   ; 0.187 ; N/A      ; N/A     ; -3.000              ;
+;  clk             ; -4.330   ; 0.187 ; N/A      ; N/A     ; -3.000              ;
+; Design-wide TNS  ; -529.942 ; 0.0   ; 0.0      ; 0.0     ; -322.705            ;
+;  clk             ; -529.942 ; 0.000 ; N/A      ; N/A     ; -322.705            ;
++------------------+----------+-------+----------+---------+---------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Board Trace Model Assignments                                                                                                                                                                                                                                                                                                                                                                                    ;
++---------------+--------------+-------------------+-------------------------+-------------------------+---------------+---------------------+----------------+------------------+--------+------------------+------------------------+------------------------+--------------+---------------+-----------------+-------+---------------------+--------------------+---------------+-----------------+-------------+
+; Pin           ; I/O Standard ; Near Tline Length ; Near Tline L per Length ; Near Tline C per Length ; Near Series R ; Near Differential R ; Near Pull-up R ; Near Pull-down R ; Near C ; Far Tline Length ; Far Tline L per Length ; Far Tline C per Length ; Far Series R ; Far Pull-up R ; Far Pull-down R ; Far C ; Termination Voltage ; Far Differential R ; EBD File Name ; EBD Signal Name ; EBD Far-end ;
++---------------+--------------+-------------------+-------------------------+-------------------------+---------------+---------------------+----------------+------------------+--------+------------------+------------------------+------------------------+--------------+---------------+-----------------+-------+---------------------+--------------------+---------------+-----------------+-------------+
+; uart_tx       ; 2.5 V        ; 0 in              ; 0 H/in                  ; 0 F/in                  ; short         ; -                   ; open           ; open             ; open   ; 0 in             ; 0 H/in                 ; 0 F/in                 ; short        ; open          ; open            ; open  ; 0 V                 ; -                  ; n/a           ; n/a             ; n/a         ;
+; led_out       ; 2.5 V        ; 0 in              ; 0 H/in                  ; 0 F/in                  ; short         ; -                   ; open           ; open             ; open   ; 0 in             ; 0 H/in                 ; 0 F/in                 ; short        ; open          ; open            ; open  ; 0 V                 ; -                  ; n/a           ; n/a             ; n/a         ;
+; ~ALTERA_DCLK~ ; 2.5 V        ; 0 in              ; 0 H/in                  ; 0 F/in                  ; short         ; -                   ; open           ; open             ; open   ; 0 in             ; 0 H/in                 ; 0 F/in                 ; short        ; open          ; open            ; open  ; 0 V                 ; -                  ; n/a           ; n/a             ; n/a         ;
+; ~ALTERA_nCEO~ ; 2.5 V        ; 0 in              ; 0 H/in                  ; 0 F/in                  ; short         ; -                   ; open           ; open             ; open   ; 0 in             ; 0 H/in                 ; 0 F/in                 ; short        ; open          ; open            ; open  ; 0 V                 ; -                  ; n/a           ; n/a             ; n/a         ;
++---------------+--------------+-------------------+-------------------------+-------------------------+---------------+---------------------+----------------+------------------+--------+------------------+------------------------+------------------------+--------------+---------------+-----------------+-------+---------------------+--------------------+---------------+-----------------+-------------+
+
+
++----------------------------------------------------------------------------+
+; Input Transition Times                                                     ;
++-------------------------+--------------+-----------------+-----------------+
+; Pin                     ; I/O Standard ; 10-90 Rise Time ; 90-10 Fall Time ;
++-------------------------+--------------+-----------------+-----------------+
+; clk                     ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; rst_n                   ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; key_feedback            ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; uart_rx                 ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; ~ALTERA_ASDO_DATA1~     ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; ~ALTERA_FLASH_nCE_nCSO~ ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
+; ~ALTERA_DATA0~          ; 2.5 V        ; 2000 ps         ; 2000 ps         ;
++-------------------------+--------------+-----------------+-----------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Signal Integrity Metrics (Slow 1200mv 0c Model)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; Pin           ; I/O Standard ; Board Delay on Rise ; Board Delay on Fall ; Steady State Voh at FPGA Pin ; Steady State Vol at FPGA Pin ; Voh Max at FPGA Pin ; Vol Min at FPGA Pin ; Ringback Voltage on Rise at FPGA Pin ; Ringback Voltage on Fall at FPGA Pin ; 10-90 Rise Time at FPGA Pin ; 90-10 Fall Time at FPGA Pin ; Monotonic Rise at FPGA Pin ; Monotonic Fall at FPGA Pin ; Steady State Voh at Far-end ; Steady State Vol at Far-end ; Voh Max at Far-end ; Vol Min at Far-end ; Ringback Voltage on Rise at Far-end ; Ringback Voltage on Fall at Far-end ; 10-90 Rise Time at Far-end ; 90-10 Fall Time at Far-end ; Monotonic Rise at Far-end ; Monotonic Fall at Far-end ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; uart_tx       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.86e-09 V                   ; 2.37 V              ; -0.0148 V           ; 0.107 V                              ; 0.037 V                              ; 4.37e-10 s                  ; 4.02e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.86e-09 V                  ; 2.37 V             ; -0.0148 V          ; 0.107 V                             ; 0.037 V                             ; 4.37e-10 s                 ; 4.02e-10 s                 ; Yes                       ; Yes                       ;
+; led_out       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.86e-09 V                   ; 2.37 V              ; -0.0148 V           ; 0.107 V                              ; 0.037 V                              ; 4.37e-10 s                  ; 4.02e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.86e-09 V                  ; 2.37 V             ; -0.0148 V          ; 0.107 V                             ; 0.037 V                             ; 4.37e-10 s                 ; 4.02e-10 s                 ; Yes                       ; Yes                       ;
+; ~ALTERA_DCLK~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 1.51e-09 V                   ; 2.37 V              ; -0.0161 V           ; 0.162 V                              ; 0.02 V                               ; 4.95e-10 s                  ; 4.49e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 1.51e-09 V                  ; 2.37 V             ; -0.0161 V          ; 0.162 V                             ; 0.02 V                              ; 4.95e-10 s                 ; 4.49e-10 s                 ; Yes                       ; Yes                       ;
+; ~ALTERA_nCEO~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.83e-09 V                   ; 2.35 V              ; -0.00181 V          ; 0.151 V                              ; 0.007 V                              ; 6.94e-10 s                  ; 8.74e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.83e-09 V                  ; 2.35 V             ; -0.00181 V         ; 0.151 V                             ; 0.007 V                             ; 6.94e-10 s                 ; 8.74e-10 s                 ; Yes                       ; Yes                       ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Signal Integrity Metrics (Slow 1200mv 85c Model)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; Pin           ; I/O Standard ; Board Delay on Rise ; Board Delay on Fall ; Steady State Voh at FPGA Pin ; Steady State Vol at FPGA Pin ; Voh Max at FPGA Pin ; Vol Min at FPGA Pin ; Ringback Voltage on Rise at FPGA Pin ; Ringback Voltage on Fall at FPGA Pin ; 10-90 Rise Time at FPGA Pin ; 90-10 Fall Time at FPGA Pin ; Monotonic Rise at FPGA Pin ; Monotonic Fall at FPGA Pin ; Steady State Voh at Far-end ; Steady State Vol at Far-end ; Voh Max at Far-end ; Vol Min at Far-end ; Ringback Voltage on Rise at Far-end ; Ringback Voltage on Fall at Far-end ; 10-90 Rise Time at Far-end ; 90-10 Fall Time at Far-end ; Monotonic Rise at Far-end ; Monotonic Fall at Far-end ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; uart_tx       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.89e-07 V                   ; 2.35 V              ; -0.000666 V         ; 0.058 V                              ; 0.002 V                              ; 4.86e-10 s                  ; 4.98e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.89e-07 V                  ; 2.35 V             ; -0.000666 V        ; 0.058 V                             ; 0.002 V                             ; 4.86e-10 s                 ; 4.98e-10 s                 ; Yes                       ; Yes                       ;
+; led_out       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.89e-07 V                   ; 2.35 V              ; -0.000666 V         ; 0.058 V                              ; 0.002 V                              ; 4.86e-10 s                  ; 4.98e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.89e-07 V                  ; 2.35 V             ; -0.000666 V        ; 0.058 V                             ; 0.002 V                             ; 4.86e-10 s                 ; 4.98e-10 s                 ; Yes                       ; Yes                       ;
+; ~ALTERA_DCLK~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 1.53e-07 V                   ; 2.34 V              ; -0.00805 V          ; 0.104 V                              ; 0.015 V                              ; 6.53e-10 s                  ; 5.55e-10 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 1.53e-07 V                  ; 2.34 V             ; -0.00805 V         ; 0.104 V                             ; 0.015 V                             ; 6.53e-10 s                 ; 5.55e-10 s                 ; Yes                       ; Yes                       ;
+; ~ALTERA_nCEO~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.32 V                       ; 2.51e-07 V                   ; 2.34 V              ; -0.0032 V           ; 0.057 V                              ; 0.016 V                              ; 8.65e-10 s                  ; 1.08e-09 s                  ; Yes                        ; Yes                        ; 2.32 V                      ; 2.51e-07 V                  ; 2.34 V             ; -0.0032 V          ; 0.057 V                             ; 0.016 V                             ; 8.65e-10 s                 ; 1.08e-09 s                 ; Yes                       ; Yes                       ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Signal Integrity Metrics (Fast 1200mv 0c Model)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; Pin           ; I/O Standard ; Board Delay on Rise ; Board Delay on Fall ; Steady State Voh at FPGA Pin ; Steady State Vol at FPGA Pin ; Voh Max at FPGA Pin ; Vol Min at FPGA Pin ; Ringback Voltage on Rise at FPGA Pin ; Ringback Voltage on Fall at FPGA Pin ; 10-90 Rise Time at FPGA Pin ; 90-10 Fall Time at FPGA Pin ; Monotonic Rise at FPGA Pin ; Monotonic Fall at FPGA Pin ; Steady State Voh at Far-end ; Steady State Vol at Far-end ; Voh Max at Far-end ; Vol Min at Far-end ; Ringback Voltage on Rise at Far-end ; Ringback Voltage on Fall at Far-end ; 10-90 Rise Time at Far-end ; 90-10 Fall Time at Far-end ; Monotonic Rise at Far-end ; Monotonic Fall at Far-end ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+; uart_tx       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.62 V                       ; 4.11e-08 V                   ; 2.72 V              ; -0.0549 V           ; 0.19 V                               ; 0.12 V                               ; 2.69e-10 s                  ; 2.76e-10 s                  ; Yes                        ; Yes                        ; 2.62 V                      ; 4.11e-08 V                  ; 2.72 V             ; -0.0549 V          ; 0.19 V                              ; 0.12 V                              ; 2.69e-10 s                 ; 2.76e-10 s                 ; Yes                       ; Yes                       ;
+; led_out       ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.62 V                       ; 4.11e-08 V                   ; 2.72 V              ; -0.0549 V           ; 0.19 V                               ; 0.12 V                               ; 2.69e-10 s                  ; 2.76e-10 s                  ; Yes                        ; Yes                        ; 2.62 V                      ; 4.11e-08 V                  ; 2.72 V             ; -0.0549 V          ; 0.19 V                              ; 0.12 V                              ; 2.69e-10 s                 ; 2.76e-10 s                 ; Yes                       ; Yes                       ;
+; ~ALTERA_DCLK~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.62 V                       ; 2.19e-08 V                   ; 2.71 V              ; -0.0718 V           ; 0.277 V                              ; 0.167 V                              ; 3.12e-10 s                  ; 3.02e-10 s                  ; No                         ; Yes                        ; 2.62 V                      ; 2.19e-08 V                  ; 2.71 V             ; -0.0718 V          ; 0.277 V                             ; 0.167 V                             ; 3.12e-10 s                 ; 3.02e-10 s                 ; No                        ; Yes                       ;
+; ~ALTERA_nCEO~ ; 2.5 V        ; 0 s                 ; 0 s                 ; 2.62 V                       ; 3.52e-08 V                   ; 2.7 V               ; -0.0198 V           ; 0.2 V                                ; 0.049 V                              ; 4.85e-10 s                  ; 6.73e-10 s                  ; Yes                        ; Yes                        ; 2.62 V                      ; 3.52e-08 V                  ; 2.7 V              ; -0.0198 V          ; 0.2 V                               ; 0.049 V                             ; 4.85e-10 s                 ; 6.73e-10 s                 ; Yes                       ; Yes                       ;
++---------------+--------------+---------------------+---------------------+------------------------------+------------------------------+---------------------+---------------------+--------------------------------------+--------------------------------------+-----------------------------+-----------------------------+----------------------------+----------------------------+-----------------------------+-----------------------------+--------------------+--------------------+-------------------------------------+-------------------------------------+----------------------------+----------------------------+---------------------------+---------------------------+
+
+
++-------------------------------------------------------------------+
+; Setup Transfers                                                   ;
++------------+----------+----------+----------+----------+----------+
+; From Clock ; To Clock ; RR Paths ; FR Paths ; RF Paths ; FF Paths ;
++------------+----------+----------+----------+----------+----------+
+; clk        ; clk      ; 4223     ; 0        ; 0        ; 0        ;
++------------+----------+----------+----------+----------+----------+
+Entries labeled "false path" only account for clock-to-clock false paths and not path-based false paths. As a result, actual path counts may be lower than reported.
+
+
++-------------------------------------------------------------------+
+; Hold Transfers                                                    ;
++------------+----------+----------+----------+----------+----------+
+; From Clock ; To Clock ; RR Paths ; FR Paths ; RF Paths ; FF Paths ;
++------------+----------+----------+----------+----------+----------+
+; clk        ; clk      ; 4223     ; 0        ; 0        ; 0        ;
++------------+----------+----------+----------+----------+----------+
+Entries labeled "false path" only account for clock-to-clock false paths and not path-based false paths. As a result, actual path counts may be lower than reported.
+
+
+---------------
+; Report TCCS ;
+---------------
+No dedicated SERDES Transmitter circuitry present in device or used in design
+
+
+---------------
+; Report RSKM ;
+---------------
+No non-DPA dedicated SERDES Receiver circuitry present in device or used in design
+
+
++------------------------------------------------+
+; Unconstrained Paths Summary                    ;
++---------------------------------+-------+------+
+; Property                        ; Setup ; Hold ;
++---------------------------------+-------+------+
+; Illegal Clocks                  ; 0     ; 0    ;
+; Unconstrained Clocks            ; 0     ; 0    ;
+; Unconstrained Input Ports       ; 3     ; 3    ;
+; Unconstrained Input Port Paths  ; 215   ; 215  ;
+; Unconstrained Output Ports      ; 2     ; 2    ;
+; Unconstrained Output Port Paths ; 2     ; 2    ;
++---------------------------------+-------+------+
+
+
++-------------------------------------+
+; Clock Status Summary                ;
++--------+-------+------+-------------+
+; Target ; Clock ; Type ; Status      ;
++--------+-------+------+-------------+
+; clk    ; clk   ; Base ; Constrained ;
++--------+-------+------+-------------+
+
+
++-----------------------------------------------------------------------------------------------------+
+; Unconstrained Input Ports                                                                           ;
++--------------+--------------------------------------------------------------------------------------+
+; Input Port   ; Comment                                                                              ;
++--------------+--------------------------------------------------------------------------------------+
+; key_feedback ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; rst_n        ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; uart_rx      ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
++--------------+--------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------+
+; Unconstrained Output Ports                                                                          ;
++-------------+---------------------------------------------------------------------------------------+
+; Output Port ; Comment                                                                               ;
++-------------+---------------------------------------------------------------------------------------+
+; led_out     ; No output delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; uart_tx     ; No output delay, min/max delays, false-path exceptions, or max skew assignments found ;
++-------------+---------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------+
+; Unconstrained Input Ports                                                                           ;
++--------------+--------------------------------------------------------------------------------------+
+; Input Port   ; Comment                                                                              ;
++--------------+--------------------------------------------------------------------------------------+
+; key_feedback ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; rst_n        ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; uart_rx      ; No input delay, min/max delays, false-path exceptions, or max skew assignments found ;
++--------------+--------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------+
+; Unconstrained Output Ports                                                                          ;
++-------------+---------------------------------------------------------------------------------------+
+; Output Port ; Comment                                                                               ;
++-------------+---------------------------------------------------------------------------------------+
+; led_out     ; No output delay, min/max delays, false-path exceptions, or max skew assignments found ;
+; uart_tx     ; No output delay, min/max delays, false-path exceptions, or max skew assignments found ;
++-------------+---------------------------------------------------------------------------------------+
+
+
++--------------------------+
+; Timing Analyzer Messages ;
++--------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Timing Analyzer
+    Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+    Info: Processing started: Wed Jun  3 11:03:36 2026
+Info: Command: quartus_sta experiements5 -c experiements5
+Info: qsta_default_script.tcl version: #1
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 16 of the 24 processors detected
+Info (21077): Low junction temperature is 0 degrees C
+Info (21077): High junction temperature is 85 degrees C
+Critical Warning (332012): Synopsys Design Constraints File file not found: 'experiements5.sdc'. A Synopsys Design Constraints File is required by the Timing Analyzer to get proper timing constraints. Without it, the Compiler will not properly optimize the design.
+Info (332142): No user constrained base clocks found in the design. Calling "derive_clocks -period 1.0"
+Info (332105): Deriving Clocks
+    Info (332105): create_clock -period 1.000 -name clk clk
+Info (332143): No user constrained clock uncertainty found in the design. Calling "derive_clock_uncertainty"
+Info (332123): Deriving Clock Uncertainty. Please refer to report_sdc in the Timing Analyzer to see clock uncertainties.
+Info: Found TIMING_ANALYZER_REPORT_SCRIPT_INCLUDE_DEFAULT_ANALYSIS = ON
+Info: Analyzing Slow 1200mV 85C Model
+Critical Warning (332148): Timing requirements not met
+    Info (11105): For recommendations on closing timing, run Report Timing Closure Recommendations in the Timing Analyzer.
+Info (332146): Worst-case setup slack is -4.330
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -4.330            -529.942 clk 
+Info (332146): Worst-case hold slack is 0.455
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):     0.455               0.000 clk 
+Info (332140): No Recovery paths to report
+Info (332140): No Removal paths to report
+Info (332146): Worst-case minimum pulse width slack is -3.000
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -3.000            -322.705 clk 
+Info (332114): Report Metastability: Found 1 synchronizer chains.
+    Info (332114): Design MTBF is not calculated because the design doesn't meet its timing requirements.
+Info: Analyzing Slow 1200mV 0C Model
+Info (334003): Started post-fitting delay annotation
+Info (334004): Delay annotation completed successfully
+Info (332123): Deriving Clock Uncertainty. Please refer to report_sdc in the Timing Analyzer to see clock uncertainties.
+Critical Warning (332148): Timing requirements not met
+    Info (11105): For recommendations on closing timing, run Report Timing Closure Recommendations in the Timing Analyzer.
+Info (332146): Worst-case setup slack is -4.071
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -4.071            -479.244 clk 
+Info (332146): Worst-case hold slack is 0.402
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):     0.402               0.000 clk 
+Info (332140): No Recovery paths to report
+Info (332140): No Removal paths to report
+Info (332146): Worst-case minimum pulse width slack is -3.000
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -3.000            -322.705 clk 
+Info (332114): Report Metastability: Found 1 synchronizer chains.
+    Info (332114): Design MTBF is not calculated because the design doesn't meet its timing requirements.
+Info: Analyzing Fast 1200mV 0C Model
+Info (332123): Deriving Clock Uncertainty. Please refer to report_sdc in the Timing Analyzer to see clock uncertainties.
+Critical Warning (332148): Timing requirements not met
+    Info (11105): For recommendations on closing timing, run Report Timing Closure Recommendations in the Timing Analyzer.
+Info (332146): Worst-case setup slack is -1.356
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -1.356            -112.260 clk 
+Info (332146): Worst-case hold slack is 0.187
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):     0.187               0.000 clk 
+Info (332140): No Recovery paths to report
+Info (332140): No Removal paths to report
+Info (332146): Worst-case minimum pulse width slack is -3.000
+    Info (332119):     Slack       End Point TNS Clock 
+    Info (332119): ========= =================== =====================
+    Info (332119):    -3.000            -230.040 clk 
+Info (332114): Report Metastability: Found 1 synchronizer chains.
+    Info (332114): Design MTBF is not calculated because the design doesn't meet its timing requirements.
+Info (332102): Design is not fully constrained for setup requirements
+Info (332102): Design is not fully constrained for hold requirements
+Info: Quartus Prime Timing Analyzer was successful. 0 errors, 5 warnings
+    Info: Peak virtual memory: 4912 megabytes
+    Info: Processing ended: Wed Jun  3 11:03:38 2026
+    Info: Elapsed time: 00:00:02
+    Info: Total CPU time (on all processors): 00:00:02
+
+
