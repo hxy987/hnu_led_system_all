@@ -72,6 +72,61 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 8),
+                      // 【诊断】显示详细蓝牙状态（含TX通道就绪状态）
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: bleWatch.isServicesReady
+                              ? Colors.green.withOpacity(0.15)
+                              : (bleWatch.connectedDevice != null
+                                  ? Colors.orange.withOpacity(0.15)
+                                  : Colors.transparent),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: bleWatch.isServicesReady
+                                ? Colors.green
+                                : (bleWatch.connectedDevice != null
+                                    ? Colors.orange
+                                    : Colors.transparent),
+                          ),
+                        ),
+                        child: Text(
+                          bleWatch.statusMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'monospace',
+                            color: bleWatch.isServicesReady
+                                ? Colors.greenAccent
+                                : (bleWatch.connectedDevice != null
+                                    ? Colors.orangeAccent
+                                    : Colors.grey),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      // 【诊断】显示最近的错误信息
+                      if (bleWatch.lastError.isNotEmpty)
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.red),
+                          ),
+                          child: Text(
+                            bleWatch.lastError,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontFamily: 'monospace',
+                              color: Colors.redAccent,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -197,10 +252,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       "纯红",
                       Colors.red,
                       0x0F,
-                    ), // 十六进制掩码参数
-                    _buildColorButton(context, "纯绿", Colors.green, 0xF0),
-                    _buildColorButton(context, "全亮", Colors.white, 0xFF),
-                    _buildColorButton(context, "全灭", Colors.grey, 0x00),
+                      bleWatch.isServicesReady,
+                    ),
+                    _buildColorButton(
+                      context,
+                      "纯绿",
+                      Colors.green,
+                      0xF0,
+                      bleWatch.isServicesReady,
+                    ),
+                    _buildColorButton(
+                      context,
+                      "全亮",
+                      Colors.white,
+                      0xFF,
+                      bleWatch.isServicesReady,
+                    ),
+                    _buildColorButton(
+                      context,
+                      "全灭",
+                      Colors.grey,
+                      0x00,
+                      bleWatch.isServicesReady,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -217,10 +291,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         ElevatedButton(
-                          onPressed: () => bleWatch.sendProtocolCmd(
-                            0x02,
-                            _currentSpeed.toInt(),
-                          ),
+                          onPressed: bleWatch.isServicesReady
+                              ? () => bleWatch.sendProtocolCmd(
+                                    0x02,
+                                    _currentSpeed.toInt(),
+                                  )
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,
                             minimumSize: const Size.fromHeight(45),
@@ -233,16 +309,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           max: 30.0,
                           divisions: 29,
                           label: "速度阻尼: ${_currentSpeed.toInt()}",
-                          onChanged: (value) {
-                            setState(() {
-                              _currentSpeed = value;
-                            });
-                            // 拖动滑动条时，实时向 FPGA 喷射新的速度阻尼参数
-                            bleWatch.sendProtocolCmd(
-                              0x02,
-                              _currentSpeed.toInt(),
-                            );
-                          },
+                          activeColor: bleWatch.isServicesReady
+                              ? Colors.teal
+                              : Colors.grey,
+                          onChanged: bleWatch.isServicesReady
+                              ? (value) {
+                                  setState(() {
+                                    _currentSpeed = value;
+                                  });
+                                  // 拖动滑动条时，实时向 FPGA 喷射新的速度阻尼参数
+                                  bleWatch.sendProtocolCmd(
+                                    0x02,
+                                    _currentSpeed.toInt(),
+                                  );
+                                }
+                              : null,
                         ),
                         const Text(
                           "提示：滑动条数值越小，FPGA计数器溢出越快，流水速度越炫酷！",
@@ -261,7 +342,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: () => bleWatch.sendProtocolCmd(0x03, 0x00),
+                  onPressed: bleWatch.isServicesReady
+                      ? () => bleWatch.sendProtocolCmd(0x03, 0x00)
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
                     minimumSize: const Size.fromHeight(45),
@@ -314,13 +397,16 @@ class _HomeScreenState extends State<HomeScreen> {
     String label,
     Color color,
     int maskParam,
+    bool enabled,
   ) {
     return ElevatedButton(
-      onPressed: () {
-        context.read<BleController>().sendProtocolCmd(0x01, maskParam);
-      },
+      onPressed: enabled
+          ? () {
+              context.read<BleController>().sendProtocolCmd(0x01, maskParam);
+            }
+          : null,
       style: ElevatedButton.styleFrom(
-        backgroundColor: color.withOpacity(0.8),
+        backgroundColor: enabled ? color.withOpacity(0.8) : Colors.grey,
         foregroundColor: Colors.black,
         textStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
