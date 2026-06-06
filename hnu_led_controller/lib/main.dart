@@ -37,7 +37,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double _currentSpeed = 10.0; // 流水灯默认速度参数
+  // ============================================================
+  // V2 全局状态：5-Byte 协议 [0x5A, mode, color, brightness, speed]
+  // ============================================================
+  int _activeMode = 0x01; // 当前激活模式：0x01=独立灯珠, 0x02=流水灯, 0x03=呼吸灯
+  int _currentColor = 0x02; // 全局颜色：0x01=红, 0x02=绿, 0x03=蓝（默认绿）
+  double _currentBrightness = 128.0; // 全局亮度 0~255（默认中位）
+  double _currentSpeed = 10.0; // 速度/节拍参数 0~255（默认10）
+
+  // 独立 LED 控制状态（8 个灯珠开关，比特位按 _ledBitPositions 映射）
+  final List<bool> _ledStates = List.filled(8, false);
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
 
-              // ----------------- 3. FPGA 指令控制面板 -----------------
+              // ----------------- 3. FPGA 指令控制面板 (V2 重构) -----------------
               if (bleWatch.connectedDevice != null) ...[
                 const SizedBox(height: 12),
                 const Text(
@@ -238,48 +247,180 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const Divider(color: Colors.indigo),
 
-                // 模式 1：静态颜色快捷点亮
-                const Text(
-                  "模式一：APP 静态控色",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                // ================================================================
+                // V2: 全局亮度控制（置顶，Mode 3 呼吸灯时锁定禁用）
+                // ================================================================
+                Card(
+                  color: const Color(0xFF1E1E1E),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.brightness_6,
+                                color: Colors.amber, size: 18),
+                            const SizedBox(width: 8),
+                            const Text(
+                              "全局亮度控制",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 13),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "${_currentBrightness.toInt()}/255",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.amberAccent,
+                                fontFamily: 'monospace',
+                              ),
+                            ),
+                            if (_activeMode == 0x03) ...[
+                              const SizedBox(width: 8),
+                              const Icon(Icons.lock,
+                                  color: Colors.redAccent, size: 14),
+                            ],
+                          ],
+                        ),
+                        Slider(
+                          value: _currentBrightness,
+                          min: 0.0,
+                          max: 255.0,
+                          divisions: 51,
+                          label: "亮度: ${_currentBrightness.toInt()}",
+                          activeColor: (_activeMode != 0x03 &&
+                                  bleWatch.isServicesReady)
+                              ? Colors.amber
+                              : Colors.grey,
+                          onChanged: (_activeMode != 0x03 &&
+                                  bleWatch.isServicesReady)
+                              ? (value) {
+                                  setState(() {
+                                    _currentBrightness = value;
+                                  });
+                                  _sendFullFrame(bleWatch,
+                                      brightness: _currentBrightness.toInt());
+                                }
+                              : null,
+                        ),
+                        Text(
+                          _activeMode == 0x03
+                              ? "⚠ 呼吸灯模式下亮度由FPGA自动调节，手动控制已锁定"
+                              : "提示：拖动滑块实时调节LED全局PWM亮度（0最暗，255最亮）",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: _activeMode == 0x03
+                                ? Colors.redAccent
+                                : Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 8),
+
+                // ================================================================
+                // V2: 全局颜色选择行
+                // ================================================================
+                const Text(
+                  "全局颜色",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildColorButton(
-                      context,
-                      "纯红",
-                      Colors.red,
-                      0x0F,
-                      bleWatch.isServicesReady,
+                    _buildGlobalColorButton(
+                      bleWatch, "纯红", Colors.red, 0x01),
+                    _buildGlobalColorButton(
+                      bleWatch, "纯绿", Colors.green, 0x02),
+                    _buildGlobalColorButton(
+                      bleWatch, "纯蓝", Colors.blue, 0x03),
+                  ],
+                ),
+                const Divider(color: Colors.indigo),
+                const SizedBox(height: 4),
+
+                // ================================================================
+                // 模式一：独立灯珠控制 (V2 合并原 Mode 1 静态控色 + 独立 LED)
+                // ================================================================
+                const Text(
+                  "模式一：独立灯珠控制",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                const SizedBox(height: 8),
+                // 全开 / 全关 快捷按钮
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: bleWatch.isServicesReady
+                          ? () {
+                              setState(() {
+                                _activeMode = 0x01;
+                                for (int i = 0; i < 8; i++)
+                                  _ledStates[i] = true;
+                              });
+                              _sendLedMask(bleWatch);
+                            }
+                          : null,
+                      icon: const Icon(Icons.lightbulb, size: 16),
+                      label: const Text("全开"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
                     ),
-                    _buildColorButton(
-                      context,
-                      "纯绿",
-                      Colors.green,
-                      0xF0,
-                      bleWatch.isServicesReady,
+                    const SizedBox(width: 16),
+                    ElevatedButton.icon(
+                      onPressed: bleWatch.isServicesReady
+                          ? () {
+                              setState(() {
+                                _activeMode = 0x01;
+                                for (int i = 0; i < 8; i++)
+                                  _ledStates[i] = false;
+                              });
+                              _sendLedMask(bleWatch);
+                            }
+                          : null,
+                      icon: const Icon(Icons.lightbulb_outline, size: 16),
+                      label: const Text("全关"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
                     ),
-                    _buildColorButton(
-                      context,
-                      "全亮",
-                      Colors.white,
-                      0xFF,
-                      bleWatch.isServicesReady,
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // 2×4 LED 矩阵（对齐物理硬件布局）
+                // Row 1 (左→右): Button 4, 3, 2, 1
+                // Row 2 (左→右): Button 5, 6, 7, 8
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: _ledDisplayOrder.sublist(0, 4).map((i) {
+                        return _buildLedButton(
+                            bleWatch.isServicesReady, i, '${i + 1}');
+                      }).toList(),
                     ),
-                    _buildColorButton(
-                      context,
-                      "全灭",
-                      Colors.grey,
-                      0x00,
-                      bleWatch.isServicesReady,
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: _ledDisplayOrder.sublist(4, 8).map((i) {
+                        return _buildLedButton(
+                            bleWatch.isServicesReady, i, '${i + 1}');
+                      }).toList(),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
 
-                // 模式 2：自动流水灯控制
+                // ================================================================
+                // 模式二：自动流水灯特效
+                // ================================================================
                 const Text(
                   "模式二：自动流水灯特效",
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -292,10 +433,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: bleWatch.isServicesReady
-                              ? () => bleWatch.sendProtocolCmd(
-                                    0x02,
-                                    _currentSpeed.toInt(),
-                                  )
+                              ? () {
+                                  setState(() => _activeMode = 0x02);
+                                  _sendFullFrame(bleWatch,
+                                      mode: 0x02,
+                                      speed: _currentSpeed.toInt());
+                                }
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,
@@ -306,8 +449,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Slider(
                           value: _currentSpeed,
                           min: 1.0,
-                          max: 30.0,
-                          divisions: 29,
+                          max: 255.0,
+                          divisions: 254,
                           label: "速度阻尼: ${_currentSpeed.toInt()}",
                           activeColor: bleWatch.isServicesReady
                               ? Colors.teal
@@ -317,11 +460,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   setState(() {
                                     _currentSpeed = value;
                                   });
-                                  // 拖动滑动条时，实时向 FPGA 喷射新的速度阻尼参数
-                                  bleWatch.sendProtocolCmd(
-                                    0x02,
-                                    _currentSpeed.toInt(),
-                                  );
+                                  _sendFullFrame(bleWatch,
+                                      mode: 0x02,
+                                      speed: _currentSpeed.toInt());
                                 }
                               : null,
                         ),
@@ -335,22 +476,92 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // 模式 3：数码管四进制级联控色
+                // ================================================================
+                // 模式三：生命体征呼吸灯 (V2 重命名 + 心跳算法)
+                // ================================================================
                 const Text(
-                  "模式三：高级组控效果",
+                  "模式三：生命体征呼吸灯",
                   style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  "模拟人体心跳节律 — 收缩快速点亮 → 舒张缓慢衰减",
+                  style: TextStyle(fontSize: 11, color: Colors.grey),
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: bleWatch.isServicesReady
-                      ? () => bleWatch.sendProtocolCmd(0x03, 0x00)
+                      ? () {
+                          setState(() => _activeMode = 0x03);
+                          _sendFullFrame(bleWatch,
+                              mode: 0x03,
+                              speed: _currentSpeed.toInt());
+                        }
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
                     minimumSize: const Size.fromHeight(45),
                   ),
-                  child: const Text("启动数码管多色级联滚动"),
+                  child: const Text("启动心跳呼吸灯"),
                 ),
+                const SizedBox(height: 8),
+                if (_activeMode == 0x03)
+                  Card(
+                    color: const Color(0xFF1E1E1E),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.favorite,
+                                  color: Colors.pinkAccent, size: 18),
+                              const SizedBox(width: 8),
+                              const Text(
+                                "心跳节拍调节",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "节拍: ${_currentSpeed.toInt()}",
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.pinkAccent,
+                                  fontFamily: 'monospace',
+                                ),
+                              ),
+                            ],
+                          ),
+                          Slider(
+                            value: _currentSpeed,
+                            min: 1.0,
+                            max: 255.0,
+                            divisions: 254,
+                            label: "节拍: ${_currentSpeed.toInt()}",
+                            activeColor: bleWatch.isServicesReady
+                                ? Colors.pinkAccent
+                                : Colors.grey,
+                            onChanged: bleWatch.isServicesReady
+                                ? (value) {
+                                    setState(() {
+                                      _currentSpeed = value;
+                                    });
+                                    _sendFullFrame(bleWatch,
+                                        mode: 0x03,
+                                        speed: _currentSpeed.toInt());
+                                  }
+                                : null,
+                          ),
+                          const Text(
+                            "提示：数值越小节奏越快，模拟真实心跳「咚-咚」律动",
+                            style:
+                                TextStyle(fontSize: 11, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 30),
 
                 // ----------------- 4. 上行反馈信息看板 -----------------
@@ -391,26 +602,146 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 辅助构建静态控色按钮
-  Widget _buildColorButton(
-    BuildContext context,
+  // ================================================================
+  // V2 核心：发送完整 5-Byte 帧，保留所有未修改参数
+  //   帧格式：[0x5A, mode, color, brightness, speed]
+  // ================================================================
+  void _sendFullFrame(
+    BleController ble, {
+    int? mode,
+    int? color,
+    int? brightness,
+    int? speed,
+  }) {
+    final m = mode ?? _activeMode;
+    final c = color ?? _currentColor;
+    final b = brightness ?? _currentBrightness.toInt();
+    final s = speed ?? _currentSpeed.toInt();
+    ble.sendProtocolCmd(m, c, b, s);
+  }
+
+  // 构建全局颜色选择按钮
+  Widget _buildGlobalColorButton(
+    BleController ble,
     String label,
     Color color,
-    int maskParam,
-    bool enabled,
+    int colorCode,
   ) {
+    final isSelected = _currentColor == colorCode;
     return ElevatedButton(
-      onPressed: enabled
+      onPressed: ble.isServicesReady
           ? () {
-              context.read<BleController>().sendProtocolCmd(0x01, maskParam);
+              setState(() => _currentColor = colorCode);
+              _sendFullFrame(ble, color: colorCode);
             }
           : null,
       style: ElevatedButton.styleFrom(
-        backgroundColor: enabled ? color.withOpacity(0.8) : Colors.grey,
-        foregroundColor: Colors.black,
+        backgroundColor:
+            isSelected ? color.withOpacity(0.8) : Colors.grey.withOpacity(0.3),
+        foregroundColor: isSelected ? Colors.white : Colors.grey,
+        side: BorderSide(
+          color: isSelected ? color : Colors.transparent,
+          width: 2,
+        ),
         textStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      child: Text(label),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isSelected)
+            const Padding(
+              padding: EdgeInsets.only(right: 4),
+              child: Icon(Icons.check_circle, size: 14),
+            ),
+          Text(label),
+          const SizedBox(width: 4),
+          Text(
+            "0${colorCode.toRadixString(16).toUpperCase()}",
+            style: const TextStyle(fontSize: 10, fontFamily: 'monospace'),
+          ),
+        ],
+      ),
     );
+  }
+
+  // 构建单个 LED 圆形开关按钮
+  Widget _buildLedButton(bool enabled, int index, String label) {
+    final isOn = _ledStates[index];
+    final Color onColor;
+    final Color accentColor;
+    switch (_currentColor) {
+      case 0x01:
+        onColor = Colors.red;
+        accentColor = Colors.redAccent;
+        break;
+      case 0x03:
+        onColor = Colors.blue;
+        accentColor = Colors.blueAccent;
+        break;
+      default: // 0x02 green
+        onColor = Colors.green;
+        accentColor = Colors.greenAccent;
+        break;
+    }
+    final Color ledColor = isOn ? onColor : Colors.grey.withOpacity(0.2);
+    final Color borderColor = isOn ? accentColor : Colors.grey;
+    return GestureDetector(
+      onTap: enabled
+          ? () {
+              setState(() {
+                _activeMode = 0x01;
+                _ledStates[index] = !isOn;
+              });
+              _sendLedMask(context.read<BleController>());
+            }
+          : null,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: ledColor,
+          border: Border.all(color: borderColor, width: 2),
+          boxShadow: isOn
+              ? [
+                  BoxShadow(
+                    color: ledColor.withOpacity(0.5),
+                    blurRadius: 6,
+                  ),
+                ]
+              : null,
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: isOn ? Colors.white : Colors.grey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // LED 物理位映射：UI 按钮 1~8 → FPGA led_data_in10 比特位
+  // my_ws2812.v 映射: g_rgb_flat[0]←bit4, [1]←bit5, [2]←bit6, [3]←bit7,
+  //                     g_rgb_flat[4]←bit3, [5]←bit2, [6]←bit1, [7]←bit0
+  static const List<int> _ledBitPositions = [4, 5, 6, 7, 3, 2, 1, 0];
+
+  // UI 按钮显示顺序：2×4 矩阵对齐物理硬件布局
+  // Row 1 (从左到右): [4, 3, 2, 1], Row 2 (从左到右): [5, 6, 7, 8]
+  static const List<int> _ledDisplayOrder = [3, 2, 1, 0, 4, 5, 6, 7];
+
+  void _sendLedMask(BleController ble) {
+    int mask = 0;
+    for (int i = 0; i < 8; i++) {
+      if (_ledStates[i]) {
+        mask |= (1 << _ledBitPositions[i]);
+      }
+    }
+    _sendFullFrame(ble, mode: 0x01, speed: mask);
   }
 }

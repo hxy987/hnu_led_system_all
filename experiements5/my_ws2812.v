@@ -23,6 +23,7 @@ module my_ws2812 (
     reg [3:0]   brightness_latched;
     reg [7:0]   data10_latched;
     reg [7:0]   data32_latched;
+    reg [7:0]   m0_r, m0_g, m0_b;             // Mode 0 的可配置颜色通道值
 
     // ============================================================
     // 3. 数据转换映射 (组合逻辑，基于锁存后的输入)
@@ -48,19 +49,34 @@ module my_ws2812 (
     // 组合逻辑：根据锁存后的 mode / brightness / data 生成 8 个灯的 GRB 数据
     integer i;
     always @(*) begin
+        // ============================================================
+        // Mode 0 颜色解码：从 data32_latched[2:0] 读取 [B, G, R] 使能位
+        //   bit[0]=R, bit[1]=G, bit[2]=B
+        //   全0时默认纯绿色（向后兼容 Mode 0x02 流水灯等不设颜色的模式）
+        // ============================================================
+        if (|data32_latched[2:0]) begin
+            m0_r = data32_latched[0] ? {brightness_latched, 4'b0} : 8'd0;
+            m0_g = data32_latched[1] ? {brightness_latched, 4'b0} : 8'd0;
+            m0_b = data32_latched[2] ? {brightness_latched, 4'b0} : 8'd0;
+        end else begin
+            m0_r = 8'd0;
+            m0_g = {brightness_latched, 4'b0};
+            m0_b = 8'd0;
+        end
+
         if (mode_latched == 1'b0) begin
-            // 模式0: 8位二进制流映射到8个灯泡 (1:纯绿 / 0:灭)
+            // 模式0: 8位二进制流映射到8个灯泡 (GRB格式: {G,R,B})
             // 物理序号映射: 高4位对应 [3,2,1,0], 低4位对应 [4,5,6,7]
-            g_rgb_flat[3] = data10_latched[7] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[2] = data10_latched[6] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[1] = data10_latched[5] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[0] = data10_latched[4] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            
-            g_rgb_flat[4] = data10_latched[3] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[5] = data10_latched[2] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[6] = data10_latched[1] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-            g_rgb_flat[7] = data10_latched[0] ? { {brightness_latched, 4'b0}, 16'd0 } : 24'd0;
-        end 
+            g_rgb_flat[3] = data10_latched[7] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[2] = data10_latched[6] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[1] = data10_latched[5] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[0] = data10_latched[4] ? {m0_g, m0_r, m0_b} : 24'd0;
+
+            g_rgb_flat[4] = data10_latched[3] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[5] = data10_latched[2] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[6] = data10_latched[1] ? {m0_g, m0_r, m0_b} : 24'd0;
+            g_rgb_flat[7] = data10_latched[0] ? {m0_g, m0_r, m0_b} : 24'd0;
+        end
         else begin
             // 模式1: 数码管四进制级联控色模式
             // data32 => {id3高, id3低, id2高, id2低}, data10 => {id1高, id1低, id0高, id0低}

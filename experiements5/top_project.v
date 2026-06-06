@@ -29,11 +29,14 @@ module top_project (
     wire        w_arb_rx_valid;
     
     wire [7:0]  w_ctrl_mode;
+    wire [7:0]  w_ctrl_color;
+    wire [7:0]  w_ctrl_brightness;
     wire [7:0]  w_ctrl_param;
     
     wire [7:0]  w_led_data_in10;
     wire [7:0]  w_led_data_in32;
     wire        w_driver_mode;
+    wire [3:0]  w_led_brightness;
 
     // 按键同步消抖链路 (针对板载发送按键)
     reg k_sync1, k_sync2;
@@ -95,8 +98,10 @@ module top_project (
         .nrst(rst_n),
         .rx_data(w_arb_rx_data),
         .rx_ready(w_arb_rx_valid),
-        .ctrl_mode(w_ctrl_mode),         // 输出锁存的全局控制模式总线
-        .ctrl_param(w_ctrl_param)        // 输出锁存的全局控制参数总线
+        .ctrl_mode(w_ctrl_mode),         // 输出锁存的全局控制模式
+        .ctrl_color(w_ctrl_color),       // 输出锁存的全局颜色 (V3)
+        .ctrl_brightness(w_ctrl_brightness), // 输出锁存的全局亮度 (V3)
+        .ctrl_param(w_ctrl_param)        // 输出锁存的全局参数 (Byte 4)
     );
 
     // =================================================================
@@ -106,10 +111,13 @@ module top_project (
         .clk(clk),
         .nrst(rst_n),
         .ctrl_mode(w_ctrl_mode),
+        .ctrl_color(w_ctrl_color),           // V3: 全局颜色输入
+        .ctrl_brightness(w_ctrl_brightness), // V3: 全局亮度输入
         .ctrl_param(w_ctrl_param),
         .led_data_in10(w_led_data_in10), // 生成直接交付给底层驱动的数据流
         .led_data_in32(w_led_data_in32),
-        .driver_mode(w_driver_mode)
+        .driver_mode(w_driver_mode),
+        .led_brightness(w_led_brightness)
     );
 
     // =================================================================
@@ -118,7 +126,7 @@ module top_project (
     my_ws2812 u_hardware_driver (
         .clk(clk),
         .rst_n(rst_n),
-        .led_brightness(4'd10),          // 设定全局中高亮度稳定档位（10/15） [cite: 452]
+        .led_brightness(w_led_brightness), // 动态全局亮度，来自effect_generator模式0x06调节
         .led_data_in10(w_led_data_in10), // 动态接收来自效果发生器的数据源
         .led_data_in32(w_led_data_in32),
         .mode(w_driver_mode),

@@ -160,15 +160,18 @@ class BleController extends ChangeNotifier {
     }
   }
 
-  // 3. 封装发送自定义 3 字节协议数据包的代码
-  void sendProtocolCmd(int mode, int param) async {
+  // 3. 封装发送自定义 5 字节协议数据包的代码 (V2)
+  //    帧格式：[0x5A, mode, color, brightness, speed]
+  void sendProtocolCmd(int mode, int color, int brightness, int speed) async {
     // ============================================================
     // 【诊断日志】打印发送前的所有关键状态
     // ============================================================
     debugPrint("══════════════════════════════════════");
-    debugPrint("📤 用户触发发送指令:");
-    debugPrint("   mode  = 0x${mode.toRadixString(16).padLeft(2, '0')}");
-    debugPrint("   param = 0x${param.toRadixString(16).padLeft(2, '0')}");
+    debugPrint("📤 用户触发发送指令 (5-Byte V2 Protocol):");
+    debugPrint("   mode       = 0x${mode.toRadixString(16).padLeft(2, '0')}");
+    debugPrint("   color      = 0x${color.toRadixString(16).padLeft(2, '0')}");
+    debugPrint("   brightness = 0x${brightness.toRadixString(16).padLeft(2, '0')}");
+    debugPrint("   speed      = 0x${speed.toRadixString(16).padLeft(2, '0')}");
     debugPrint("   connectedDevice = ${connectedDevice != null ? '已连接' : 'NULL!'}");
     debugPrint("   txChar          = ${txChar != null ? txChar!.uuid.str : 'NULL!'}");
     debugPrint("   isServicesReady = $isServicesReady");
@@ -206,11 +209,13 @@ class BleController extends ChangeNotifier {
       return;
     }
 
-    List<int> cmdFrame = [0x5A, mode, param];
+    List<int> cmdFrame = [0x5A, mode, color, brightness, speed];
     debugPrint("   📡 协议帧: $cmdFrame");
     debugPrint("   📡 十六进制: [0x${cmdFrame[0].toRadixString(16).padLeft(2, '0')}, "
         "0x${cmdFrame[1].toRadixString(16).padLeft(2, '0')}, "
-        "0x${cmdFrame[2].toRadixString(16).padLeft(2, '0')}]");
+        "0x${cmdFrame[2].toRadixString(16).padLeft(2, '0')}, "
+        "0x${cmdFrame[3].toRadixString(16).padLeft(2, '0')}, "
+        "0x${cmdFrame[4].toRadixString(16).padLeft(2, '0')}]");
 
     // 确定写模式
     bool useWithoutResponse = txChar!.properties.writeWithoutResponse;
@@ -220,7 +225,11 @@ class BleController extends ChangeNotifier {
       await txChar!.write(cmdFrame, withoutResponse: useWithoutResponse);
       debugPrint("✅ 数据已提交到蓝牙协议栈: $cmdFrame");
       debugPrint("══════════════════════════════════════");
-      feedbackMessage = "已发送: [${cmdFrame[0]}, ${cmdFrame[1]}, ${cmdFrame[2]}]";
+      feedbackMessage = "已发送: [0x${cmdFrame[0].toRadixString(16).padLeft(2,'0')}, "
+          "0x${cmdFrame[1].toRadixString(16).padLeft(2,'0')}, "
+          "0x${cmdFrame[2].toRadixString(16).padLeft(2,'0')}, "
+          "0x${cmdFrame[3].toRadixString(16).padLeft(2,'0')}, "
+          "0x${cmdFrame[4].toRadixString(16).padLeft(2,'0')}]";
       statusMessage = "✅ 指令已发送";
       lastError = "";
       notifyListeners();

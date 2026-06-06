@@ -1,27 +1,31 @@
 // =================================================================
 // 湖南大学 CSEE EC C301 - 综合选题3
-// 文件功能：多通道换色效果发生器（流水灯、呼吸渐变、APP静态换色）
+// 文件功能：多通道换色效果发生器 V3.0
+//           支持 5-Byte 协议 + 生命体征心跳呼吸灯
 // =================================================================
 
 module effect_generator (
     input               clk,             // 50MHz 系统时钟
     input               nrst,            // 低电平有效复位
-    
-    // 来自上层解析器的控制总线输入
-    input       [7:0]   ctrl_mode,       // 当前生效的控制模式
-    input       [7:0]   ctrl_param,      // 当前模式的控制参数
-    
+
+    // 来自上层解析器的控制总线输入 (V3: 5-Byte Protocol)
+    input       [7:0]   ctrl_mode,       // Byte 1: 控制模式 (0x01/0x02/0x03)
+    input       [7:0]   ctrl_color,      // Byte 2: 全局颜色 (0x01=R, 0x02=G, 0x03=B)
+    input       [7:0]   ctrl_brightness, // Byte 3: 全局亮度 (0x00~0xFF)
+    input       [7:0]   ctrl_param,      // Byte 4: LED掩码 / 速度 / 节拍
+
     // 输出给底层驱动（你的 my_ws2812）的标准总线接口
     output reg  [7:0]   led_data_in10,   // 交付给驱动的 data10
     output reg  [7:0]   led_data_in32,   // 交付给驱动的 data32
-    output reg          driver_mode      // 驱动的双模式控制线 (0/1)
+    output reg          driver_mode,     // 驱动的双模式控制线 (0/1)
+    output reg  [3:0]   led_brightness   // 全局亮度 (0~15)，4-bit PWM
 );
 
     //---------------------------------------------------------
     // 1. 内部定时基准发生器（50MHz时钟分频）
     //---------------------------------------------------------
     reg [24:0]  anim_clk_cnt;
-    reg         step_pulse;              // 动画步进脉冲基准
+    reg         step_pulse;              // 动画步进脉冲基准 (50ms)
 
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
@@ -37,12 +41,25 @@ module effect_generator (
     end
 
     //---------------------------------------------------------
-    // 2. 流水灯动画效果生成器子系统 (Mode = 8'h02)
+    // 2. 颜色解码器 (组合逻辑，将全局颜色字节映射为 data32 位域)
+    //    my_ws2812.v 映射: bit[0]=R, bit[1]=G, bit[2]=B
+    //---------------------------------------------------------
+    reg [7:0] color_data32;
+    always @(*) begin
+        case (ctrl_color)
+            8'h01: color_data32 = 8'h01; // 纯红 (bit[0]=R)
+            8'h02: color_data32 = 8'h02; // 纯绿 (bit[1]=G)
+            8'h03: color_data32 = 8'h04; // 纯蓝 (bit[2]=B)
+            default: color_data32 = 8'h02; // 默认绿色
+        endcase
+    end
+
+    //---------------------------------------------------------
+    // 3. 流水灯动画效果生成器子系统 (Mode = 8'h02)
     //---------------------------------------------------------
     reg [7:0]   water_speed_cnt;
     reg [2:0]   water_led_idx;
 
-    // 修复点：已将此处的 rst_n 纠正为接口声明的 nrst
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
             water_speed_cnt <= 8'd0;
@@ -75,59 +92,98 @@ module effect_generator (
     end
 
     //---------------------------------------------------------
-    // 3. 数码管四进制级联控色系统 (Mode = 8'h03)
+    // 4. 生命体征心跳呼吸灯波形发生器 (Mode = 8'h03)
+    //    —— 仿生人体心跳节律：收缩快速点亮 → 舒张缓慢衰减
+    //    24-bit 相位累加器，高4位划为16个节段 (0~15)：
+    //      Seg  0~ 2 (18%):  Systole  收缩期 — 亮度 2→15 快速攀升
+    //      Seg  3    ( 6%):  Peak     峰顶期 — 亮度 15   Hold
+    //      Seg  4~ 9 (38%):  Diastole 舒张期 — 亮度 15→ 2 缓慢衰减
+    //      Seg 10~15 (38%):  Pause    间歇期 — 亮度  2   低亮等待
     //---------------------------------------------------------
-    reg [7:0] group_data_32;
-    reg [7:0] group_data_10;
-    
+    reg [23:0]  hb_phase_acc;       // 24-bit 相位累加器
+    wire [3:0] hb_segment;          // 高4位 = 16节段编号
+    reg  [3:0] hb_brightness;       // 呼吸灯当前亮度输出
+
+    assign hb_segment = hb_phase_acc[23:20];
+
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
-            group_data_32 <= 8'b0101_1010; // 预设绚丽交叉色
-            group_data_10 <= 8'b1111_0000;
-        end else if (step_pulse && (ctrl_mode == 8'h03)) begin
-            // 随时间缓缓滚动四进制颜色编码
-            group_data_32 <= {group_data_32[5:0], group_data_32[7:6]};
-            group_data_10 <= {group_data_10[1:0], group_data_10[7:2]};
+            hb_phase_acc <= 24'd0;
+        end else if (ctrl_mode == 8'h03) begin
+            // 相位累加：步长 = ctrl_param + 1，值越小节奏越快
+            hb_phase_acc <= hb_phase_acc + {16'd0, ctrl_param} + 24'd1;
+        end else begin
+            hb_phase_acc <= 24'd0;  // 非心跳模式时复位相位
         end
     end
 
-    //---------------------------------------------------------
-    // 4. 组合逻辑仲裁多路选择器（MUX）
-    //---------------------------------------------------------
+    // 节段 → 亮度映射 (组合逻辑)
     always @(*) begin
-        // 缺省安全状态：灯灭
-        led_data_in10 = 8'd0;
-        led_data_in32 = 8'd0;
-        driver_mode   = 1'b0;
-
-        case (ctrl_mode)
-            8'h01: begin
-                // APP静态控色模式：手机发送的 ctrl_param 直接当做灯的二进制掩码
-                driver_mode   = 1'b0; // 切换到二进制控制模式
-                led_data_in10 = ctrl_param;
-                led_data_in32 = 8'd0;
-            end
-
-            8'h02: begin
-                // 自动流水灯效果模式
-                driver_mode   = 1'b0;
-                led_data_in10 = water_data_out;
-                led_data_in32 = 8'd0;
-            end
-
-            8'h03: begin
-                // 数码管级联变色组控效果模式
-                driver_mode   = 1'b1; // 激活驱动器的四进制数码管多色映射逻辑
-                led_data_in10 = group_data_10;
-                led_data_in32 = group_data_32;
-            end
-
-            default: begin
-                driver_mode   = 1'b0;
-                led_data_in10 = 8'd0;
-                led_data_in32 = 8'd0;
-            end
+        case (hb_segment)
+            // Systole: 快速收缩 ramping (2→15, 3节段)
+            4'd0:  hb_brightness = 4'd2;
+            4'd1:  hb_brightness = 4'd7;
+            4'd2:  hb_brightness = 4'd12;
+            // Peak: 峰顶保持 (15)
+            4'd3:  hb_brightness = 4'd15;
+            // Diastole: 缓慢舒张衰减 (15→2, 6节段)
+            4'd4:  hb_brightness = 4'd15;
+            4'd5:  hb_brightness = 4'd13;
+            4'd6:  hb_brightness = 4'd11;
+            4'd7:  hb_brightness = 4'd9;
+            4'd8:  hb_brightness = 4'd6;
+            4'd9:  hb_brightness = 4'd3;
+            // Pause: 间歇低亮等待 (2, 6节段)
+            4'd10, 4'd11, 4'd12, 4'd13, 4'd14, 4'd15:
+                    hb_brightness = 4'd2;
+            default: hb_brightness = 4'd2;
         endcase
+    end
+
+    //---------------------------------------------------------
+    // 5. 时序逻辑仲裁多路选择器（寄存器输出）
+    //    Mode 0x01: 独立灯珠控制 — ctrl_param = LED 位掩码
+    //    Mode 0x02: 流水灯 — ctrl_param = 速度阻尼因子
+    //    Mode 0x03: 心跳呼吸 — ctrl_param = 节拍速度，亮度由波形发生器驱动
+    //    default:   保持上一组寄存器值不变
+    //---------------------------------------------------------
+    always @(posedge clk or negedge nrst) begin
+        if (!nrst) begin
+            led_data_in10 <= 8'd0;
+            led_data_in32 <= 8'd0;
+            driver_mode   <= 1'b0;
+            led_brightness <= 4'd10;
+        end else begin
+            case (ctrl_mode)
+                8'h01: begin
+                    // 独立灯珠控制：全局颜色 + 手动亮度 + LED 掩码
+                    driver_mode    <= 1'b0;
+                    led_data_in10  <= ctrl_param;          // LED 位掩码
+                    led_data_in32  <= color_data32;        // 解码后的颜色位域
+                    led_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit 亮度
+                end
+
+                8'h02: begin
+                    // 自动流水灯效果：全局颜色 + 手动亮度 + 流水速度
+                    driver_mode    <= 1'b0;
+                    led_data_in10  <= water_data_out;      // 一热码流水数据
+                    led_data_in32  <= color_data32;        // 解码后的颜色位域
+                    led_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit 亮度
+                end
+
+                8'h03: begin
+                    // 生命体征心跳呼吸灯：全局颜色 + 波形亮度 + 节拍速度
+                    // 亮度由 FPGA 内部呼吸波形发生器自动驱动，忽略手动亮度输入
+                    driver_mode    <= 1'b0;
+                    led_data_in10  <= 8'hFF;               // 全部 8 灯珠呼吸
+                    led_data_in32  <= color_data32;        // 解码后的颜色位域
+                    led_brightness <= hb_brightness;        // 波形发生器输出 (2~15)
+                end
+
+                // default: 保持上一组寄存器值不变
+                default: ;
+            endcase
+        end
     end
 
 endmodule

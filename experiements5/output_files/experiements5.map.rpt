@@ -1,5 +1,5 @@
 Analysis & Synthesis report for experiements5
-Wed Jun  3 11:03:28 2026
+Sat Jun  6 23:14:54 2026
 Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 
 
@@ -23,12 +23,11 @@ Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
  15. Multiplexer Restructuring Statistics (Restructuring Performed)
  16. Parameter Settings for User Entity Instance: uart_rx:u_physics_rx
  17. Parameter Settings for User Entity Instance: uart_tx:u_physics_tx
- 18. Port Connectivity Checks: "my_ws2812:u_hardware_driver"
- 19. Port Connectivity Checks: "tx_rx_arbiter:u_system_arbiter"
- 20. Post-Synthesis Netlist Statistics for Top Partition
- 21. Elapsed Time Per Partition
- 22. Analysis & Synthesis Messages
- 23. Analysis & Synthesis Suppressed Messages
+ 18. Port Connectivity Checks: "tx_rx_arbiter:u_system_arbiter"
+ 19. Post-Synthesis Netlist Statistics for Top Partition
+ 20. Elapsed Time Per Partition
+ 21. Analysis & Synthesis Messages
+ 22. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -55,15 +54,15 @@ on the Quartus Prime software download page.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Wed Jun  3 11:03:28 2026           ;
+; Analysis & Synthesis Status        ; Successful - Sat Jun  6 23:14:54 2026           ;
 ; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
 ; Revision Name                      ; experiements5                                   ;
 ; Top-level Entity Name              ; top_project                                     ;
 ; Family                             ; Cyclone IV E                                    ;
-; Total logic elements               ; 344                                             ;
-;     Total combinational functions  ; 279                                             ;
-;     Dedicated logic registers      ; 215                                             ;
-; Total registers                    ; 215                                             ;
+; Total logic elements               ; 458                                             ;
+;     Total combinational functions  ; 376                                             ;
+;     Dedicated logic registers      ; 275                                             ;
+; Total registers                    ; 275                                             ;
 ; Total pins                         ; 6                                               ;
 ; Total virtual pins                 ; 0                                               ;
 ; Total memory bits                  ; 0                                               ;
@@ -175,19 +174,19 @@ on the Quartus Prime software download page.
 +----------------------------+-------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                     ;
-+----------------------------------+-----------------+------------------------+----------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                       ; Library ;
-+----------------------------------+-----------------+------------------------+----------------------------------------------------+---------+
-; my_ws2812.v                      ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/my_ws2812.v        ;         ;
-; uart_tx.v                        ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/uart_tx.v          ;         ;
-; uart_rx.v                        ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/uart_rx.v          ;         ;
-; cmd_parser.v                     ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/cmd_parser.v       ;         ;
-; effect_generator.v               ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/effect_generator.v ;         ;
-; tx_rx_arbiter.v                  ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/tx_rx_arbiter.v    ;         ;
-; top_project.v                    ; yes             ; User Verilog HDL File  ; D:/Quartus24files/experiements5/top_project.v      ;         ;
-+----------------------------------+-----------------+------------------------+----------------------------------------------------+---------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                         ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                           ; Library ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------+---------+
+; my_ws2812.v                      ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/my_ws2812.v        ;         ;
+; uart_tx.v                        ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/uart_tx.v          ;         ;
+; uart_rx.v                        ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v          ;         ;
+; cmd_parser.v                     ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/cmd_parser.v       ;         ;
+; effect_generator.v               ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/effect_generator.v ;         ;
+; tx_rx_arbiter.v                  ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/tx_rx_arbiter.v    ;         ;
+; top_project.v                    ; yes             ; User Verilog HDL File  ; D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v      ;         ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------+---------+
 
 
 +---------------------------------------------------------+
@@ -195,20 +194,20 @@ on the Quartus Prime software download page.
 +---------------------------------------------+-----------+
 ; Resource                                    ; Usage     ;
 +---------------------------------------------+-----------+
-; Estimated Total logic elements              ; 344       ;
+; Estimated Total logic elements              ; 458       ;
 ;                                             ;           ;
-; Total combinational functions               ; 279       ;
+; Total combinational functions               ; 376       ;
 ; Logic element usage by number of LUT inputs ;           ;
-;     -- 4 input functions                    ; 98        ;
-;     -- 3 input functions                    ; 61        ;
-;     -- <=2 input functions                  ; 120       ;
+;     -- 4 input functions                    ; 173       ;
+;     -- 3 input functions                    ; 49        ;
+;     -- <=2 input functions                  ; 154       ;
 ;                                             ;           ;
 ; Logic elements by mode                      ;           ;
-;     -- normal mode                          ; 190       ;
-;     -- arithmetic mode                      ; 89        ;
+;     -- normal mode                          ; 249       ;
+;     -- arithmetic mode                      ; 127       ;
 ;                                             ;           ;
-; Total registers                             ; 215       ;
-;     -- Dedicated logic registers            ; 215       ;
+; Total registers                             ; 275       ;
+;     -- Dedicated logic registers            ; 275       ;
 ;     -- I/O registers                        ; 0         ;
 ;                                             ;           ;
 ; I/O pins                                    ; 6         ;
@@ -216,9 +215,9 @@ on the Quartus Prime software download page.
 ; Embedded Multiplier 9-bit elements          ; 0         ;
 ;                                             ;           ;
 ; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 215       ;
-; Total fan-out                               ; 1673      ;
-; Average fan-out                             ; 3.31      ;
+; Maximum fan-out                             ; 275       ;
+; Total fan-out                               ; 2249      ;
+; Average fan-out                             ; 3.39      ;
 +---------------------------------------------+-----------+
 
 
@@ -227,10 +226,10 @@ on the Quartus Prime software download page.
 +-------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------+------------------+--------------+
 ; Compilation Hierarchy Node          ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                         ; Entity Name      ; Library Name ;
 +-------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------+------------------+--------------+
-; |top_project                        ; 279 (0)             ; 215 (2)                   ; 0           ; 0            ; 0       ; 0         ; 6    ; 0            ; |top_project                                ; top_project      ; work         ;
-;    |cmd_parser:u_top_fsm|           ; 12 (12)             ; 45 (45)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|cmd_parser:u_top_fsm           ; cmd_parser       ; work         ;
-;    |effect_generator:u_effect_core| ; 80 (80)             ; 41 (41)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|effect_generator:u_effect_core ; effect_generator ; work         ;
-;    |my_ws2812:u_hardware_driver|    ; 91 (91)             ; 46 (46)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|my_ws2812:u_hardware_driver    ; my_ws2812        ; work         ;
+; |top_project                        ; 376 (0)             ; 275 (2)                   ; 0           ; 0            ; 0       ; 0         ; 6    ; 0            ; |top_project                                ; top_project      ; work         ;
+;    |cmd_parser:u_top_fsm|           ; 41 (41)             ; 69 (69)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|cmd_parser:u_top_fsm           ; cmd_parser       ; work         ;
+;    |effect_generator:u_effect_core| ; 113 (113)           ; 76 (76)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|effect_generator:u_effect_core ; effect_generator ; work         ;
+;    |my_ws2812:u_hardware_driver|    ; 126 (126)           ; 47 (47)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|my_ws2812:u_hardware_driver    ; my_ws2812        ; work         ;
 ;    |tx_rx_arbiter:u_system_arbiter| ; 7 (7)               ; 16 (16)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|tx_rx_arbiter:u_system_arbiter ; tx_rx_arbiter    ; work         ;
 ;    |uart_rx:u_physics_rx|           ; 59 (59)             ; 43 (43)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|uart_rx:u_physics_rx           ; uart_rx          ; work         ;
 ;    |uart_tx:u_physics_tx|           ; 30 (30)             ; 22 (22)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |top_project|uart_tx:u_physics_tx           ; uart_tx          ; work         ;
@@ -239,15 +238,17 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 
 
 Encoding Type:  One-Hot
-+--------------------------------------------------------------------+
-; State Machine - |top_project|cmd_parser:u_top_fsm|state            ;
-+-----------------+---------------+-----------------+----------------+
-; Name            ; state.ST_IDLE ; state.ST_UPDATE ; state.ST_CHECK ;
-+-----------------+---------------+-----------------+----------------+
-; state.ST_IDLE   ; 0             ; 0               ; 0              ;
-; state.ST_CHECK  ; 1             ; 0               ; 1              ;
-; state.ST_UPDATE ; 1             ; 1               ; 0              ;
-+-----------------+---------------+-----------------+----------------+
++---------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |top_project|cmd_parser:u_top_fsm|state                                                                         ;
++----------------------+---------------------+--------------------+-------------------+----------------------+--------------------+
+; Name                 ; state.ST_GET_BRIGHT ; state.ST_GET_COLOR ; state.ST_GET_MODE ; state.ST_WAIT_HEADER ; state.ST_GET_PARAM ;
++----------------------+---------------------+--------------------+-------------------+----------------------+--------------------+
+; state.ST_WAIT_HEADER ; 0                   ; 0                  ; 0                 ; 0                    ; 0                  ;
+; state.ST_GET_MODE    ; 0                   ; 0                  ; 1                 ; 1                    ; 0                  ;
+; state.ST_GET_COLOR   ; 0                   ; 1                  ; 0                 ; 1                    ; 0                  ;
+; state.ST_GET_BRIGHT  ; 1                   ; 0                  ; 0                 ; 1                    ; 0                  ;
+; state.ST_GET_PARAM   ; 0                   ; 0                  ; 0                 ; 1                    ; 1                  ;
++----------------------+---------------------+--------------------+-------------------+----------------------+--------------------+
 
 
 Encoding Type:  One-Hot
@@ -275,53 +276,57 @@ Encoding Type:  One-Hot
 +-------------------+------------------+------------------+-------------------+------------------+
 
 
-+---------------------------------------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                                                  ;
-+-----------------------------------------------------+---------------------------------------------------------------+
-; Register name                                       ; Reason for Removal                                            ;
-+-----------------------------------------------------+---------------------------------------------------------------+
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[2..5]    ; Stuck at GND due to stuck port data_in                        ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_out[2..5]    ; Stuck at GND due to stuck port data_in                        ;
-; uart_tx:u_physics_tx|shift_reg[2..5]                ; Stuck at GND due to stuck port data_in                        ;
-; my_ws2812:u_hardware_driver|brightness_latched[0,2] ; Stuck at GND due to stuck port data_in                        ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[0]       ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[1]     ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[1]       ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[6]     ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[6]       ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[7]     ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_out[0,1,6]   ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_out[7]     ;
-; uart_tx:u_physics_tx|shift_reg[1,6,7]               ; Merged with uart_tx:u_physics_tx|shift_reg[0]                 ;
-; my_ws2812:u_hardware_driver|brightness_latched[3]   ; Merged with my_ws2812:u_hardware_driver|brightness_latched[1] ;
-; my_ws2812:u_hardware_driver|data32_latched[4]       ; Merged with my_ws2812:u_hardware_driver|data32_latched[1]     ;
-; my_ws2812:u_hardware_driver|data32_latched[5]       ; Merged with my_ws2812:u_hardware_driver|data32_latched[0]     ;
-; my_ws2812:u_hardware_driver|data32_latched[6]       ; Merged with my_ws2812:u_hardware_driver|data32_latched[3]     ;
-; my_ws2812:u_hardware_driver|data32_latched[7]       ; Merged with my_ws2812:u_hardware_driver|data32_latched[2]     ;
-; effect_generator:u_effect_core|group_data_10[1]     ; Merged with effect_generator:u_effect_core|group_data_10[0]   ;
-; effect_generator:u_effect_core|group_data_32[2,7]   ; Merged with effect_generator:u_effect_core|group_data_10[0]   ;
-; effect_generator:u_effect_core|group_data_10[3]     ; Merged with effect_generator:u_effect_core|group_data_10[2]   ;
-; effect_generator:u_effect_core|group_data_32[0,5]   ; Merged with effect_generator:u_effect_core|group_data_10[2]   ;
-; effect_generator:u_effect_core|group_data_10[5]     ; Merged with effect_generator:u_effect_core|group_data_10[4]   ;
-; effect_generator:u_effect_core|group_data_32[3,6]   ; Merged with effect_generator:u_effect_core|group_data_10[4]   ;
-; effect_generator:u_effect_core|group_data_10[7]     ; Merged with effect_generator:u_effect_core|group_data_10[6]   ;
-; effect_generator:u_effect_core|group_data_32[1,4]   ; Merged with effect_generator:u_effect_core|group_data_10[6]   ;
-; uart_rx:u_physics_rx|state~8                        ; Lost fanout                                                   ;
-; uart_rx:u_physics_rx|state~9                        ; Lost fanout                                                   ;
-; Total Number of Removed Registers = 42              ;                                                               ;
-+-----------------------------------------------------+---------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                             ;
++----------------------------------------------------+-----------------------------------------------------------+
+; Register name                                      ; Reason for Removal                                        ;
++----------------------------------------------------+-----------------------------------------------------------+
+; effect_generator:u_effect_core|led_data_in32[3..7] ; Stuck at GND due to stuck port data_in                    ;
+; effect_generator:u_effect_core|driver_mode         ; Stuck at GND due to stuck port data_in                    ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[2..5]   ; Stuck at GND due to stuck port data_in                    ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_out[2..5]   ; Stuck at GND due to stuck port data_in                    ;
+; uart_tx:u_physics_tx|shift_reg[2..5]               ; Stuck at GND due to stuck port data_in                    ;
+; my_ws2812:u_hardware_driver|mode_latched           ; Stuck at GND due to stuck port data_in                    ;
+; my_ws2812:u_hardware_driver|data32_latched[3..7]   ; Stuck at GND due to stuck port data_in                    ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[0]      ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[1] ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[1]      ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[6] ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[6]      ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_buf[7] ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_out[0,1,6]  ; Merged with tx_rx_arbiter:u_system_arbiter|tx_data_out[7] ;
+; uart_tx:u_physics_tx|shift_reg[1,6,7]              ; Merged with uart_tx:u_physics_tx|shift_reg[0]             ;
+; cmd_parser:u_top_fsm|state~9                       ; Lost fanout                                               ;
+; cmd_parser:u_top_fsm|state~10                      ; Lost fanout                                               ;
+; uart_rx:u_physics_rx|state~8                       ; Lost fanout                                               ;
+; uart_rx:u_physics_rx|state~9                       ; Lost fanout                                               ;
+; Total Number of Removed Registers = 37             ;                                                           ;
++----------------------------------------------------+-----------------------------------------------------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Removed Registers Triggering Further Register Optimizations                                                                                                  ;
-+-----------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
-; Register name                                 ; Reason for Removal        ; Registers Removed due to This Register                                           ;
-+-----------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[5] ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[5], uart_tx:u_physics_tx|shift_reg[5] ;
-;                                               ; due to stuck port data_in ;                                                                                  ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[4] ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[4], uart_tx:u_physics_tx|shift_reg[4] ;
-;                                               ; due to stuck port data_in ;                                                                                  ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[3] ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[3], uart_tx:u_physics_tx|shift_reg[3] ;
-;                                               ; due to stuck port data_in ;                                                                                  ;
-; tx_rx_arbiter:u_system_arbiter|tx_data_buf[2] ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[2], uart_tx:u_physics_tx|shift_reg[2] ;
-;                                               ; due to stuck port data_in ;                                                                                  ;
-+-----------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                                                    ;
++-------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; Register name                                   ; Reason for Removal        ; Registers Removed due to This Register                                           ;
++-------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[5]   ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[5], uart_tx:u_physics_tx|shift_reg[5] ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[4]   ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[4], uart_tx:u_physics_tx|shift_reg[4] ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[3]   ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[3], uart_tx:u_physics_tx|shift_reg[3] ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; tx_rx_arbiter:u_system_arbiter|tx_data_buf[2]   ; Stuck at GND              ; tx_rx_arbiter:u_system_arbiter|tx_data_out[2], uart_tx:u_physics_tx|shift_reg[2] ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|led_data_in32[7] ; Stuck at GND              ; my_ws2812:u_hardware_driver|data32_latched[7]                                    ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|led_data_in32[6] ; Stuck at GND              ; my_ws2812:u_hardware_driver|data32_latched[6]                                    ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|led_data_in32[5] ; Stuck at GND              ; my_ws2812:u_hardware_driver|data32_latched[5]                                    ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|led_data_in32[4] ; Stuck at GND              ; my_ws2812:u_hardware_driver|data32_latched[4]                                    ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|led_data_in32[3] ; Stuck at GND              ; my_ws2812:u_hardware_driver|data32_latched[3]                                    ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
+; effect_generator:u_effect_core|driver_mode      ; Stuck at GND              ; my_ws2812:u_hardware_driver|mode_latched                                         ;
+;                                                 ; due to stuck port data_in ;                                                                                  ;
++-------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
 
 
 +------------------------------------------------------+
@@ -329,51 +334,55 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 215   ;
-; Number of registers using Synchronous Clear  ; 73    ;
+; Total registers                              ; 275   ;
+; Number of registers using Synchronous Clear  ; 105   ;
 ; Number of registers using Synchronous Load   ; 8     ;
-; Number of registers using Asynchronous Clear ; 213   ;
+; Number of registers using Asynchronous Clear ; 273   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 131   ;
+; Number of registers using Clock Enable       ; 165   ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+-----------------------------------------------------------+
-; Inverted Register Statistics                              ;
-+-------------------------------------------------+---------+
-; Inverted Register                               ; Fan out ;
-+-------------------------------------------------+---------+
-; uart_tx:u_physics_tx|tx_dout                    ; 3       ;
-; uart_tx:u_physics_tx|tx_en_sync1                ; 2       ;
-; uart_tx:u_physics_tx|tx_en_sync2                ; 1       ;
-; my_ws2812:u_hardware_driver|state               ; 26      ;
-; tx_rx_arbiter:u_system_arbiter|tx_en            ; 1       ;
-; cmd_parser:u_top_fsm|ctrl_mode[0]               ; 16      ;
-; effect_generator:u_effect_core|group_data_10[6] ; 4       ;
-; effect_generator:u_effect_core|group_data_10[4] ; 4       ;
-; cmd_parser:u_top_fsm|ctrl_param[4]              ; 2       ;
-; uart_rx:u_physics_rx|rx_d1                      ; 12      ;
-; uart_rx:u_physics_rx|rx_d2                      ; 1       ;
-; uart_rx:u_physics_rx|rx_d0                      ; 1       ;
-; Total number of inverted registers = 12         ;         ;
-+-------------------------------------------------+---------+
++------------------------------------------------------------+
+; Inverted Register Statistics                               ;
++--------------------------------------------------+---------+
+; Inverted Register                                ; Fan out ;
++--------------------------------------------------+---------+
+; uart_tx:u_physics_tx|tx_dout                     ; 3       ;
+; uart_tx:u_physics_tx|tx_en_sync1                 ; 2       ;
+; uart_tx:u_physics_tx|tx_en_sync2                 ; 1       ;
+; my_ws2812:u_hardware_driver|state                ; 26      ;
+; tx_rx_arbiter:u_system_arbiter|tx_en             ; 1       ;
+; effect_generator:u_effect_core|led_brightness[1] ; 1       ;
+; effect_generator:u_effect_core|led_brightness[3] ; 1       ;
+; cmd_parser:u_top_fsm|ctrl_mode[0]                ; 18      ;
+; cmd_parser:u_top_fsm|ctrl_color[1]               ; 2       ;
+; cmd_parser:u_top_fsm|ctrl_brightness[7]          ; 1       ;
+; uart_rx:u_physics_rx|rx_d1                       ; 12      ;
+; uart_rx:u_physics_rx|rx_d2                       ; 1       ;
+; uart_rx:u_physics_rx|rx_d0                       ; 1       ;
+; Total number of inverted registers = 13          ;         ;
++--------------------------------------------------+---------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                           ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                 ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
-; 3:1                ; 13 bits   ; 26 LEs        ; 13 LEs               ; 13 LEs                 ; Yes        ; |top_project|uart_tx:u_physics_tx|baud_cnt[1]              ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |top_project|uart_tx:u_physics_tx|bit_cnt[3]               ;
-; 5:1                ; 3 bits    ; 9 LEs         ; 3 LEs                ; 6 LEs                  ; Yes        ; |top_project|uart_rx:u_physics_rx|bit_cnt[0]               ;
-; 8:1                ; 16 bits   ; 80 LEs        ; 16 LEs               ; 64 LEs                 ; Yes        ; |top_project|uart_rx:u_physics_rx|baud_cnt[6]              ;
-; 130:1              ; 8 bits    ; 688 LEs       ; 16 LEs               ; 672 LEs                ; Yes        ; |top_project|my_ws2812:u_hardware_driver|data10_latched[0] ;
-; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |top_project|tx_rx_arbiter:u_system_arbiter|state          ;
-; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |top_project|uart_rx:u_physics_rx|Selector19               ;
-; 8:1                ; 2 bits    ; 10 LEs        ; 4 LEs                ; 6 LEs                  ; No         ; |top_project|uart_rx:u_physics_rx|Selector16               ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                              ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------+
+; 3:1                ; 13 bits   ; 26 LEs        ; 13 LEs               ; 13 LEs                 ; Yes        ; |top_project|uart_tx:u_physics_tx|baud_cnt[10]                ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |top_project|uart_tx:u_physics_tx|bit_cnt[0]                  ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |top_project|cmd_parser:u_top_fsm|wd_cnt[8]                   ;
+; 5:1                ; 3 bits    ; 9 LEs         ; 3 LEs                ; 6 LEs                  ; Yes        ; |top_project|uart_rx:u_physics_rx|bit_cnt[1]                  ;
+; 8:1                ; 16 bits   ; 80 LEs        ; 16 LEs               ; 64 LEs                 ; Yes        ; |top_project|uart_rx:u_physics_rx|baud_cnt[8]                 ;
+; 256:1              ; 2 bits    ; 340 LEs       ; 2 LEs                ; 338 LEs                ; Yes        ; |top_project|effect_generator:u_effect_core|led_brightness[2] ;
+; 256:1              ; 8 bits    ; 1360 LEs      ; 16 LEs               ; 1344 LEs               ; Yes        ; |top_project|effect_generator:u_effect_core|led_data_in10[5]  ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |top_project|cmd_parser:u_top_fsm|state                       ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |top_project|tx_rx_arbiter:u_system_arbiter|state             ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |top_project|uart_rx:u_physics_rx|Selector19                  ;
+; 8:1                ; 2 bits    ; 10 LEs        ; 4 LEs                ; 6 LEs                  ; No         ; |top_project|uart_rx:u_physics_rx|Selector18                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------+
 
 
 +-------------------------------------------------------------------+
@@ -397,18 +406,6 @@ Note: In order to hide this table in the UI and the text report file, please set
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+---------------------------------------------------------+
-; Port Connectivity Checks: "my_ws2812:u_hardware_driver" ;
-+-------------------+-------+----------+------------------+
-; Port              ; Type  ; Severity ; Details          ;
-+-------------------+-------+----------+------------------+
-; led_brightness[3] ; Input ; Info     ; Stuck at VCC     ;
-; led_brightness[2] ; Input ; Info     ; Stuck at GND     ;
-; led_brightness[1] ; Input ; Info     ; Stuck at VCC     ;
-; led_brightness[0] ; Input ; Info     ; Stuck at GND     ;
-+-------------------+-------+----------+------------------+
-
-
 +------------------------------------------------------------+
 ; Port Connectivity Checks: "tx_rx_arbiter:u_system_arbiter" ;
 +------------------+-------+----------+----------------------+
@@ -426,25 +423,25 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
 ; boundary_port         ; 6                           ;
-; cycloneiii_ff         ; 215                         ;
-;     CLR               ; 68                          ;
-;     CLR SCLR          ; 14                          ;
-;     ENA CLR           ; 72                          ;
-;     ENA CLR SCLR      ; 51                          ;
-;     ENA CLR SCLR SLD  ; 8                           ;
+; cycloneiii_ff         ; 275                         ;
+;     CLR               ; 70                          ;
+;     CLR SCLR          ; 38                          ;
+;     ENA CLR           ; 90                          ;
+;     ENA CLR SCLR      ; 67                          ;
+;     ENA CLR SLD       ; 8                           ;
 ;     plain             ; 2                           ;
-; cycloneiii_lcell_comb ; 280                         ;
-;     arith             ; 89                          ;
-;         2 data inputs ; 82                          ;
-;         3 data inputs ; 7                           ;
-;     normal            ; 191                         ;
-;         1 data inputs ; 13                          ;
-;         2 data inputs ; 26                          ;
-;         3 data inputs ; 54                          ;
-;         4 data inputs ; 98                          ;
+; cycloneiii_lcell_comb ; 377                         ;
+;     arith             ; 127                         ;
+;         2 data inputs ; 112                         ;
+;         3 data inputs ; 15                          ;
+;     normal            ; 250                         ;
+;         1 data inputs ; 16                          ;
+;         2 data inputs ; 27                          ;
+;         3 data inputs ; 34                          ;
+;         4 data inputs ; 173                         ;
 ;                       ;                             ;
-; Max LUT depth         ; 8.00                        ;
-; Average LUT depth     ; 3.00                        ;
+; Max LUT depth         ; 9.00                        ;
+; Average LUT depth     ; 3.28                        ;
 +-----------------------+-----------------------------+
 
 
@@ -463,58 +460,58 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Wed Jun  3 11:03:22 2026
+    Info: Processing started: Sat Jun  6 23:14:48 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off experiements5 -c experiements5
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 16 of the 24 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file pro1.v
-    Info (12023): Found entity 1: pro1 File: D:/Quartus24files/experiements5/pro1.v Line: 1
+    Info (12023): Found entity 1: pro1 File: D:/FlutterProjects/hnu_led_system_all/experiements5/pro1.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file my_ws2812.v
-    Info (12023): Found entity 1: my_ws2812 File: D:/Quartus24files/experiements5/my_ws2812.v Line: 1
+    Info (12023): Found entity 1: my_ws2812 File: D:/FlutterProjects/hnu_led_system_all/experiements5/my_ws2812.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file uart_tx.v
-    Info (12023): Found entity 1: uart_tx File: D:/Quartus24files/experiements5/uart_tx.v Line: 1
+    Info (12023): Found entity 1: uart_tx File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_tx.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file uart_rx.v
-    Info (12023): Found entity 1: uart_rx File: D:/Quartus24files/experiements5/uart_rx.v Line: 1
+    Info (12023): Found entity 1: uart_rx File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file cmd_parser.v
-    Info (12023): Found entity 1: cmd_parser File: D:/Quartus24files/experiements5/cmd_parser.v Line: 6
+    Info (12023): Found entity 1: cmd_parser File: D:/FlutterProjects/hnu_led_system_all/experiements5/cmd_parser.v Line: 8
 Info (12021): Found 1 design units, including 1 entities, in source file effect_generator.v
-    Info (12023): Found entity 1: effect_generator File: D:/Quartus24files/experiements5/effect_generator.v Line: 6
+    Info (12023): Found entity 1: effect_generator File: D:/FlutterProjects/hnu_led_system_all/experiements5/effect_generator.v Line: 7
 Info (12021): Found 1 design units, including 1 entities, in source file tx_rx_arbiter.v
-    Info (12023): Found entity 1: tx_rx_arbiter File: D:/Quartus24files/experiements5/tx_rx_arbiter.v Line: 6
+    Info (12023): Found entity 1: tx_rx_arbiter File: D:/FlutterProjects/hnu_led_system_all/experiements5/tx_rx_arbiter.v Line: 6
 Info (12021): Found 1 design units, including 1 entities, in source file top_project.v
-    Info (12023): Found entity 1: top_project File: D:/Quartus24files/experiements5/top_project.v Line: 6
+    Info (12023): Found entity 1: top_project File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 6
 Info (12127): Elaborating entity "top_project" for the top level hierarchy
-Info (12128): Elaborating entity "uart_rx" for hierarchy "uart_rx:u_physics_rx" File: D:/Quartus24files/experiements5/top_project.v Line: 59
-Warning (10230): Verilog HDL assignment warning at uart_rx.v(63): truncated value with size 32 to match size of target (16) File: D:/Quartus24files/experiements5/uart_rx.v Line: 63
-Warning (10230): Verilog HDL assignment warning at uart_rx.v(71): truncated value with size 32 to match size of target (3) File: D:/Quartus24files/experiements5/uart_rx.v Line: 71
-Warning (10230): Verilog HDL assignment warning at uart_rx.v(73): truncated value with size 32 to match size of target (16) File: D:/Quartus24files/experiements5/uart_rx.v Line: 73
-Warning (10230): Verilog HDL assignment warning at uart_rx.v(89): truncated value with size 32 to match size of target (16) File: D:/Quartus24files/experiements5/uart_rx.v Line: 89
-Info (12128): Elaborating entity "uart_tx" for hierarchy "uart_tx:u_physics_tx" File: D:/Quartus24files/experiements5/top_project.v Line: 71
-Info (12128): Elaborating entity "tx_rx_arbiter" for hierarchy "tx_rx_arbiter:u_system_arbiter" File: D:/Quartus24files/experiements5/top_project.v Line: 88
-Info (12128): Elaborating entity "cmd_parser" for hierarchy "cmd_parser:u_top_fsm" File: D:/Quartus24files/experiements5/top_project.v Line: 100
-Info (12128): Elaborating entity "effect_generator" for hierarchy "effect_generator:u_effect_core" File: D:/Quartus24files/experiements5/top_project.v Line: 113
-Info (12128): Elaborating entity "my_ws2812" for hierarchy "my_ws2812:u_hardware_driver" File: D:/Quartus24files/experiements5/top_project.v Line: 126
-Info (13000): Registers with preset signals will power-up high File: D:/Quartus24files/experiements5/uart_tx.v Line: 6
+Info (12128): Elaborating entity "uart_rx" for hierarchy "uart_rx:u_physics_rx" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 62
+Warning (10230): Verilog HDL assignment warning at uart_rx.v(63): truncated value with size 32 to match size of target (16) File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v Line: 63
+Warning (10230): Verilog HDL assignment warning at uart_rx.v(71): truncated value with size 32 to match size of target (3) File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v Line: 71
+Warning (10230): Verilog HDL assignment warning at uart_rx.v(73): truncated value with size 32 to match size of target (16) File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v Line: 73
+Warning (10230): Verilog HDL assignment warning at uart_rx.v(89): truncated value with size 32 to match size of target (16) File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_rx.v Line: 89
+Info (12128): Elaborating entity "uart_tx" for hierarchy "uart_tx:u_physics_tx" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 74
+Info (12128): Elaborating entity "tx_rx_arbiter" for hierarchy "tx_rx_arbiter:u_system_arbiter" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 91
+Info (12128): Elaborating entity "cmd_parser" for hierarchy "cmd_parser:u_top_fsm" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 105
+Info (12128): Elaborating entity "effect_generator" for hierarchy "effect_generator:u_effect_core" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 121
+Info (12128): Elaborating entity "my_ws2812" for hierarchy "my_ws2812:u_hardware_driver" File: D:/FlutterProjects/hnu_led_system_all/experiements5/top_project.v Line: 134
+Info (13000): Registers with preset signals will power-up high File: D:/FlutterProjects/hnu_led_system_all/experiements5/uart_tx.v Line: 6
 Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
 Info (286030): Timing-Driven Synthesis is running
-Info (17049): 2 registers lost all their fanouts during netlist optimizations.
-Info (144001): Generated suppressed messages file D:/Quartus24files/experiements5/output_files/experiements5.map.smsg
+Info (17049): 4 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file D:/FlutterProjects/hnu_led_system_all/experiements5/output_files/experiements5.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 353 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 467 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 4 input pins
     Info (21059): Implemented 2 output pins
-    Info (21061): Implemented 347 logic cells
+    Info (21061): Implemented 461 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 5 warnings
-    Info: Peak virtual memory: 4879 megabytes
-    Info: Processing ended: Wed Jun  3 11:03:28 2026
+    Info: Peak virtual memory: 4857 megabytes
+    Info: Processing ended: Sat Jun  6 23:14:54 2026
     Info: Elapsed time: 00:00:06
-    Info: Total CPU time (on all processors): 00:00:13
+    Info: Total CPU time (on all processors): 00:00:14
 
 
 +------------------------------------------+
 ; Analysis & Synthesis Suppressed Messages ;
 +------------------------------------------+
-The suppressed messages can be found in D:/Quartus24files/experiements5/output_files/experiements5.map.smsg.
+The suppressed messages can be found in D:/FlutterProjects/hnu_led_system_all/experiements5/output_files/experiements5.map.smsg.
 
 

@@ -1,0 +1,41 @@
+---
+
+### 📋 Flutter App Feature Refinement & Bio-mimetic Animation Upgrade
+
+Hi Claude, we need to fine-tune our current implementation based on the latest hardware testing results. Please implement the following 3 refactoring items carefully, ensuring **no regressions in other existing features**.
+
+#### 1. Fix Mode 1 Color Switching State Leak (Maintain Node Mask)
+
+* **Current Issue**: When in **Mode 1 (Independent LED Control)**, if a few specific LEDs are currently ON, clicking the "Global Color" button to change the color incorrectly resets the active LEDs to only Node 5 and Node 7. It fails to preserve the user's active selections.
+* **Expected Behavior**: Changing the global color must **ONLY change the color byte (Byte 2)**. It must strictly **preserve the current ON/OFF selection state (bitmask)** of all 8 LEDs. Whichever LEDs were illuminated before the color change must remain illuminated in the new color instantly, without reverting to any default state.
+
+#### 2. Implement "Center-Symmetric Wave Breathing" for Mode 3
+
+The current breathing effect is too monotonous. We want to upgrade **Mode 3** to a highly kinetic **"Center-Symmetric Wave Breathing Light" (中心对称波浪呼吸灯)**.
+Since our hardware is a **2×4 grid matrix**, we want to treat the 4 columns as a water surface where a ripple expands from the center outward.
+
+* **Layout Coordinates Reference**:
+* Column 1 (Outer Left): `[Button 4]` (Row 1) & `[Button 5]` (Row 2)
+* Column 2 (Inner Left): `[Button 3]` (Row 1) & `[Button 6]` (Row 2)
+* Column 3 (Inner Right): `[Button 2]` (Row 1) & `[Button 7]` (Row 2)
+* Column 4 (Outer Right): `[Button 1]` (Row 1) & `[Button 8]` (Row 2)
+
+
+* **Visual Wave Progression (Simulated in App Interface or dictated via protocol if calculated by app)**:
+1. **Phase 1 (Center Ignite)**: The wave starts at the center. Column 2 and Column 3 rapidly light up to maximum intensity first.
+2. **Phase 2 (Outward Diffusion)**: As Column 2 and 3 begin to smoothly fade, the pulse "pushes" outward. Column 1 and Column 4 begin to glow from dim to bright.
+3. **Phase 3 (Alternating Rhythms)**: When the outermost columns (1 & 4) reach peak brightness, the inner columns (2 & 3) hit their darkest valley. This creates an organic, smooth, alternating wave movement ("Inner bright, Outer dim" $\rightarrow$ "Inner dim, Outer bright").
+4. **Tempo**: Ensure this expansion behaves with a human lifelike cadence, avoiding abrupt jumps.
+
+
+
+#### 3. Restrict Maximum Damping/Speed Boundaries for Mode 2 & Mode 3
+
+* **Current Issue**: The maximum value boundary on the speed/damping slider is currently set way too high. When dragged to the upper limit, the transition interval becomes so prolonged that users cannot observe any noticeable movement within a reasonable time frame.
+* **Fix**: Cap/Scale the slider's maximum animation interval parameter or damping factor to a practical threshold (recommended equivalent maximum factor of **15**). Ensure the entire slider tracking range allows the user to see distinct, continuous motion from high-speed to low-speed within an optimal observation window.
+
+---
+
+**CRITICAL CRITERIA**: Apply these changes directly into your local buffers. Double-check your state variables so that `Mode 1`'s node list does not get wiped on color changes. Show me the file diffs once completed.
+
+---
