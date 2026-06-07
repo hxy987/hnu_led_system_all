@@ -18,7 +18,8 @@ module effect_generator (
     output reg  [7:0]   led_data_in10,   // 交付给驱动的 data10
     output reg  [7:0]   led_data_in32,   // 交付给驱动的 data32
     output reg          driver_mode,     // 驱动的双模式控制线 (0/1)
-    output reg  [3:0]   led_brightness   // 全局亮度 (0~15)，4-bit PWM
+    output reg  [3:0]   inner_brightness,// 内群亮度 (LED 2,3,6,7) 4-bit
+    output reg  [3:0]   outer_brightness // 外群亮度 (LED 1,4,5,8) 4-bit
 );
 
     //---------------------------------------------------------
@@ -152,32 +153,40 @@ module effect_generator (
             led_data_in10 <= 8'd0;
             led_data_in32 <= 8'd0;
             driver_mode   <= 1'b0;
-            led_brightness <= 4'd10;
+            inner_brightness <= 4'd10;
+            outer_brightness <= 4'd10;
         end else begin
             case (ctrl_mode)
                 8'h01: begin
                     // 独立灯珠控制：全局颜色 + 手动亮度 + LED 掩码
-                    driver_mode    <= 1'b0;
-                    led_data_in10  <= ctrl_param;          // LED 位掩码
-                    led_data_in32  <= color_data32;        // 解码后的颜色位域
-                    led_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit 亮度
+                    // 内/外群亮度相同（均取 Byte 3 高 4-bit），向后兼容
+                    driver_mode     <= 1'b0;
+                    led_data_in10   <= ctrl_param;          // LED 位掩码
+                    led_data_in32   <= color_data32;        // 解码后的颜色位域
+                    inner_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit
+                    outer_brightness <= ctrl_brightness[7:4]; // 同内群
                 end
 
                 8'h02: begin
                     // 自动流水灯效果：全局颜色 + 手动亮度 + 流水速度
-                    driver_mode    <= 1'b0;
-                    led_data_in10  <= water_data_out;      // 一热码流水数据
-                    led_data_in32  <= color_data32;        // 解码后的颜色位域
-                    led_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit 亮度
+                    // 内/外群亮度相同（均取 Byte 3 高 4-bit），向后兼容
+                    driver_mode     <= 1'b0;
+                    led_data_in10   <= water_data_out;      // 一热码流水数据
+                    led_data_in32   <= color_data32;        // 解码后的颜色位域
+                    inner_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit
+                    outer_brightness <= ctrl_brightness[7:4]; // 同内群
                 end
 
                 8'h03: begin
-                    // 生命体征心跳呼吸灯：全局颜色 + 波形亮度 + 节拍速度
-                    // 亮度由 FPGA 内部呼吸波形发生器自动驱动，忽略手动亮度输入
-                    driver_mode    <= 1'b0;
-                    led_data_in10  <= 8'hFF;               // 全部 8 灯珠呼吸
-                    led_data_in32  <= color_data32;        // 解码后的颜色位域
-                    led_brightness <= hb_brightness;        // 波形发生器输出 (2~15)
+                    // 中心对称波浪呼吸灯：Byte 3 高/低 nibble 分拆内/外群亮度
+                    //   Byte 3[7:4] = inner_brightness (0~15)
+                    //   Byte 3[3:0] = outer_brightness (0~15)
+                    // 全部 8 灯同时点亮，亮度差异由 nibble 值控制
+                    driver_mode     <= 1'b0;
+                    led_data_in10   <= 8'hFF;               // 全部 8 灯珠点亮
+                    led_data_in32   <= color_data32;        // 解码后的颜色位域
+                    inner_brightness <= ctrl_brightness[7:4]; // 高 nibble → 内群
+                    outer_brightness <= ctrl_brightness[3:0]; // 低 nibble → 外群
                 end
 
                 // default: 保持上一组寄存器值不变

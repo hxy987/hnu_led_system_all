@@ -1,7 +1,8 @@
 module my_ws2812 (
     input               clk,             // 50MHz 系统时钟 (20ns)
     input               rst_n,           // 低电平有效复位
-    input       [3:0]   led_brightness,  // 16档亮度调节控制 (0~15)
+    input       [3:0]   inner_brightness,// 内群亮度 (LED 2,3,6,7) 16档 (0~15)
+    input       [3:0]   outer_brightness,// 外群亮度 (LED 1,4,5,8) 16档 (0~15)
     input       [7:0]   led_data_in10,   // 模式0的数据 / 模式1的低组数据
     input       [7:0]   led_data_in32,   // 模式1的高组数据
     input               mode,            // 模式选择 (0:流水灯, 1:数码管组控)
@@ -20,10 +21,13 @@ module my_ws2812 (
     // 2. 内部寄存器：帧起始锁存
     // ============================================================
     reg         mode_latched;
-    reg [3:0]   brightness_latched;
+    reg [3:0]   inner_brightness_latched;
+    reg [3:0]   outer_brightness_latched;
     reg [7:0]   data10_latched;
     reg [7:0]   data32_latched;
-    reg [7:0]   m0_r, m0_g, m0_b;             // Mode 0 的可配置颜色通道值
+    // 内群 / 外群独立颜色通道值
+    reg [7:0]   m0_inner_r, m0_inner_g, m0_inner_b;
+    reg [7:0]   m0_outer_r, m0_outer_g, m0_outer_b;
 
     // ============================================================
     // 3. 数据转换映射 (组合逻辑，基于锁存后的输入)
@@ -50,45 +54,55 @@ module my_ws2812 (
     integer i;
     always @(*) begin
         // ============================================================
-        // Mode 0 颜色解码：从 data32_latched[2:0] 读取 [B, G, R] 使能位
-        //   bit[0]=R, bit[1]=G, bit[2]=B
-        //   全0时默认纯绿色（向后兼容 Mode 0x02 流水灯等不设颜色的模式）
+        // Mode 0 颜色解码：按内群/外群独立计算颜色通道
+        //   内群使用 inner_brightness，外群使用 outer_brightness
         // ============================================================
+        // 内群颜色
         if (|data32_latched[2:0]) begin
-            m0_r = data32_latched[0] ? {brightness_latched, 4'b0} : 8'd0;
-            m0_g = data32_latched[1] ? {brightness_latched, 4'b0} : 8'd0;
-            m0_b = data32_latched[2] ? {brightness_latched, 4'b0} : 8'd0;
+            m0_inner_r = data32_latched[0] ? {inner_brightness_latched, 4'b0} : 8'd0;
+            m0_inner_g = data32_latched[1] ? {inner_brightness_latched, 4'b0} : 8'd0;
+            m0_inner_b = data32_latched[2] ? {inner_brightness_latched, 4'b0} : 8'd0;
         end else begin
-            m0_r = 8'd0;
-            m0_g = {brightness_latched, 4'b0};
-            m0_b = 8'd0;
+            m0_inner_r = 8'd0;
+            m0_inner_g = {inner_brightness_latched, 4'b0};
+            m0_inner_b = 8'd0;
+        end
+        // 外群颜色
+        if (|data32_latched[2:0]) begin
+            m0_outer_r = data32_latched[0] ? {outer_brightness_latched, 4'b0} : 8'd0;
+            m0_outer_g = data32_latched[1] ? {outer_brightness_latched, 4'b0} : 8'd0;
+            m0_outer_b = data32_latched[2] ? {outer_brightness_latched, 4'b0} : 8'd0;
+        end else begin
+            m0_outer_r = 8'd0;
+            m0_outer_g = {outer_brightness_latched, 4'b0};
+            m0_outer_b = 8'd0;
         end
 
         if (mode_latched == 1'b0) begin
-            // 模式0: 8位二进制流映射到8个灯泡 (GRB格式: {G,R,B})
-            // 物理序号映射: 高4位对应 [3,2,1,0], 低4位对应 [4,5,6,7]
-            g_rgb_flat[3] = data10_latched[7] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[2] = data10_latched[6] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[1] = data10_latched[5] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[0] = data10_latched[4] ? {m0_g, m0_r, m0_b} : 24'd0;
-
-            g_rgb_flat[4] = data10_latched[3] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[5] = data10_latched[2] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[6] = data10_latched[1] ? {m0_g, m0_r, m0_b} : 24'd0;
-            g_rgb_flat[7] = data10_latched[0] ? {m0_g, m0_r, m0_b} : 24'd0;
+            // 模式0: 8位二进制流映射，按内/外群使用独立亮度
+            // 外群 LED (1,4,5,8) ← g_rgb_flat[0],[3],[4],[7]
+            g_rgb_flat[3] = data10_latched[7] ? {m0_outer_g, m0_outer_r, m0_outer_b} : 24'd0;
+            g_rgb_flat[0] = data10_latched[4] ? {m0_outer_g, m0_outer_r, m0_outer_b} : 24'd0;
+            g_rgb_flat[4] = data10_latched[3] ? {m0_outer_g, m0_outer_r, m0_outer_b} : 24'd0;
+            g_rgb_flat[7] = data10_latched[0] ? {m0_outer_g, m0_outer_r, m0_outer_b} : 24'd0;
+            // 内群 LED (2,3,6,7) ← g_rgb_flat[1],[2],[5],[6]
+            g_rgb_flat[2] = data10_latched[6] ? {m0_inner_g, m0_inner_r, m0_inner_b} : 24'd0;
+            g_rgb_flat[1] = data10_latched[5] ? {m0_inner_g, m0_inner_r, m0_inner_b} : 24'd0;
+            g_rgb_flat[5] = data10_latched[2] ? {m0_inner_g, m0_inner_r, m0_inner_b} : 24'd0;
+            g_rgb_flat[6] = data10_latched[1] ? {m0_inner_g, m0_inner_r, m0_inner_b} : 24'd0;
         end
         else begin
             // 模式1: 数码管四进制级联控色模式
             // data32 => {id3高, id3低, id2高, id2低}, data10 => {id1高, id1低, id0高, id0低}
-            g_rgb_flat[0] = get_color(data32_latched[7:6], brightness_latched); // id3 上灯
-            g_rgb_flat[1] = get_color(data32_latched[5:4], brightness_latched); // id3 下灯
-            g_rgb_flat[2] = get_color(data32_latched[3:2], brightness_latched); // id2 上灯
-            g_rgb_flat[3] = get_color(data32_latched[1:0], brightness_latched); // id2 下灯
-            
-            g_rgb_flat[4] = get_color(data10_latched[7:6], brightness_latched); // id1 上灯
-            g_rgb_flat[5] = get_color(data10_latched[5:4], brightness_latched); // id1 下灯
-            g_rgb_flat[6] = get_color(data10_latched[3:2], brightness_latched); // id0 上灯
-            g_rgb_flat[7] = get_color(data10_latched[1:0], brightness_latched); // id0 下灯
+            g_rgb_flat[0] = get_color(data32_latched[7:6], inner_brightness_latched); // id3 上灯
+            g_rgb_flat[1] = get_color(data32_latched[5:4], inner_brightness_latched); // id3 下灯
+            g_rgb_flat[2] = get_color(data32_latched[3:2], inner_brightness_latched); // id2 上灯
+            g_rgb_flat[3] = get_color(data32_latched[1:0], inner_brightness_latched); // id2 下灯
+
+            g_rgb_flat[4] = get_color(data10_latched[7:6], inner_brightness_latched); // id1 上灯
+            g_rgb_flat[5] = get_color(data10_latched[5:4], inner_brightness_latched); // id1 下灯
+            g_rgb_flat[6] = get_color(data10_latched[3:2], inner_brightness_latched); // id0 上灯
+            g_rgb_flat[7] = get_color(data10_latched[1:0], inner_brightness_latched); // id0 下灯
         end
     end
 
@@ -118,7 +132,8 @@ module my_ws2812 (
             led_out  <= 1'b0;
             // 锁存寄存器清零
             mode_latched     <= 1'b0;
-            brightness_latched <= 4'd0;
+            inner_brightness_latched <= 4'd0;
+            outer_brightness_latched <= 4'd0;
             data10_latched   <= 8'd0;
             data32_latched   <= 8'd0;
         end 
@@ -163,7 +178,8 @@ module my_ws2812 (
                         rst_cnt <= 16'd0;
                         // ========== 关键：帧起始锁存输入 ==========
                         mode_latched     <= mode;
-                        brightness_latched <= led_brightness;
+                        inner_brightness_latched <= inner_brightness;
+                        outer_brightness_latched <= outer_brightness;
                         data10_latched   <= led_data_in10;
                         data32_latched   <= led_data_in32;
                         // ======================================

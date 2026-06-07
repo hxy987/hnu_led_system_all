@@ -36,7 +36,8 @@ module top_project (
     wire [7:0]  w_led_data_in10;
     wire [7:0]  w_led_data_in32;
     wire        w_driver_mode;
-    wire [3:0]  w_led_brightness;
+    wire [3:0]  w_inner_brightness;
+    wire [3:0]  w_outer_brightness;
 
     // 按键同步消抖链路 (针对板载发送按键)
     reg k_sync1, k_sync2;
@@ -117,7 +118,8 @@ module top_project (
         .led_data_in10(w_led_data_in10), // 生成直接交付给底层驱动的数据流
         .led_data_in32(w_led_data_in32),
         .driver_mode(w_driver_mode),
-        .led_brightness(w_led_brightness)
+        .inner_brightness(w_inner_brightness),
+        .outer_brightness(w_outer_brightness)
     );
 
     // =================================================================
@@ -126,7 +128,8 @@ module top_project (
     my_ws2812 u_hardware_driver (
         .clk(clk),
         .rst_n(rst_n),
-        .led_brightness(w_led_brightness), // 动态全局亮度，来自effect_generator模式0x06调节
+        .inner_brightness(w_inner_brightness),
+        .outer_brightness(w_outer_brightness), // 动态全局亮度，来自effect_generator模式0x06调节
         .led_data_in10(w_led_data_in10), // 动态接收来自效果发生器的数据源
         .led_data_in32(w_led_data_in32),
         .mode(w_driver_mode),

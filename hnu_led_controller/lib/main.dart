@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'bluetooth_controller.dart';
@@ -47,6 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // 独立 LED 控制状态（8 个灯珠开关，比特位按 _ledBitPositions 映射）
   final List<bool> _ledStates = List.filled(8, false);
+
+  // Mode 3 波浪呼吸灯状态
+  Timer? _waveTimer;
+  double _wavePhase = 0.0; // 波浪相位 0.0 ~ 1.0（连续循环）
+  double _innerIntensity = 0.0; // 内群强度 0.0~1.0（UI 预览用）
+  double _outerIntensity = 0.0; // 外群强度 0.0~1.0（UI 预览用）
+  int _innerBrightnessValue = 0; // 内群实际亮度字节值 0~255
+  int _outerBrightnessValue = 0; // 外群实际亮度字节值 0~255
 
   @override
   Widget build(BuildContext context) {
@@ -298,8 +309,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   setState(() {
                                     _currentBrightness = value;
                                   });
-                                  _sendFullFrame(bleWatch,
-                                      brightness: _currentBrightness.toInt());
+                                  if (_activeMode == 0x01) {
+                                    // Mode 1: 亮度变更时保留当前 LED 开关掩码
+                                    int mask = 0;
+                                    for (int i = 0; i < 8; i++) {
+                                      if (_ledStates[i])
+                                        mask |= (1 << _ledBitPositions[i]);
+                                    }
+                                    _sendFullFrame(bleWatch,
+                                        mode: 0x01,
+                                        brightness: _currentBrightness.toInt(),
+                                        speed: mask);
+                                  } else {
+                                    _sendFullFrame(bleWatch,
+                                        brightness: _currentBrightness.toInt());
+                                  }
                                 }
                               : null,
                         ),
@@ -357,6 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton.icon(
                       onPressed: bleWatch.isServicesReady
                           ? () {
+                              _stopWaveBreathing();
                               setState(() {
                                 _activeMode = 0x01;
                                 for (int i = 0; i < 8; i++)
@@ -376,6 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton.icon(
                       onPressed: bleWatch.isServicesReady
                           ? () {
+                              _stopWaveBreathing();
                               setState(() {
                                 _activeMode = 0x01;
                                 for (int i = 0; i < 8; i++)
@@ -434,6 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ElevatedButton(
                           onPressed: bleWatch.isServicesReady
                               ? () {
+                                  _stopWaveBreathing();
                                   setState(() => _activeMode = 0x02);
                                   _sendFullFrame(bleWatch,
                                       mode: 0x02,
@@ -449,9 +476,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Slider(
                           value: _currentSpeed,
                           min: 1.0,
-                          max: 255.0,
-                          divisions: 254,
-                          label: "速度阻尼: ${_currentSpeed.toInt()}",
+                          max: 15.0,
+                          divisions: 14,
+                          label: "速度: ${_currentSpeed.toInt()}",
                           activeColor: bleWatch.isServicesReady
                               ? Colors.teal
                               : Colors.grey,
@@ -477,35 +504,87 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
 
                 // ================================================================
-                // 模式三：生命体征呼吸灯 (V2 重命名 + 心跳算法)
+                // 模式三：中心对称波浪呼吸灯
                 // ================================================================
                 const Text(
-                  "模式三：生命体征呼吸灯",
+                  "模式三：中心对称波浪呼吸灯",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  "模拟人体心跳节律 — 收缩快速点亮 → 舒张缓慢衰减",
+                  "2×4 网格波浪 — 中心向外扩散，内列/外列交替呼吸",
                   style: TextStyle(fontSize: 11, color: Colors.grey),
                 ),
                 const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: bleWatch.isServicesReady
-                      ? () {
-                          setState(() => _activeMode = 0x03);
-                          _sendFullFrame(bleWatch,
-                              mode: 0x03,
-                              speed: _currentSpeed.toInt());
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    minimumSize: const Size.fromHeight(45),
-                  ),
-                  child: const Text("启动心跳呼吸灯"),
+                // 启动/停止按钮行
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: (_activeMode != 0x03 &&
+                              bleWatch.isServicesReady)
+                          ? () {
+                              setState(() => _activeMode = 0x03);
+                              _startWaveBreathing(bleWatch);
+                            }
+                          : null,
+                      icon: const Icon(Icons.waves, size: 16),
+                      label: const Text("启动波浪"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton.icon(
+                      onPressed: (_activeMode == 0x03 &&
+                              bleWatch.isServicesReady)
+                          ? () {
+                              _stopWaveBreathing();
+                              setState(() => _activeMode = 0x01);
+                            }
+                          : null,
+                      icon: const Icon(Icons.stop, size: 16),
+                      label: const Text("停止波浪"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
-                if (_activeMode == 0x03)
+                // 仅当波浪激活时显示预览 + 节拍滑块
+                if (_activeMode == 0x03) ...[
+                  // 波浪可视化预览 — 内群/外群实时亮度
+                  Card(
+                    color: const Color(0xFF1E1E1E),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          const Text(
+                            "波浪呼吸预览（动态亮度调制）",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildWaveColumn("外左\nCol1", _outerIntensity,
+                                  _outerBrightnessValue),
+                              _buildWaveColumn("内左\nCol2", _innerIntensity,
+                                  _innerBrightnessValue),
+                              _buildWaveColumn("内右\nCol3", _innerIntensity,
+                                  _innerBrightnessValue),
+                              _buildWaveColumn("外右\nCol4", _outerIntensity,
+                                  _outerBrightnessValue),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // 节拍调节滑块
                   Card(
                     color: const Color(0xFF1E1E1E),
                     child: Padding(
@@ -514,20 +593,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.favorite,
-                                  color: Colors.pinkAccent, size: 18),
+                              const Icon(Icons.speed,
+                                  color: Colors.purpleAccent, size: 18),
                               const SizedBox(width: 8),
                               const Text(
-                                "心跳节拍调节",
+                                "波浪节拍调节",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                               const Spacer(),
                               Text(
-                                "节拍: ${_currentSpeed.toInt()}",
+                                "节拍: ${_currentSpeed.toInt()}/15",
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  color: Colors.pinkAccent,
+                                  color: Colors.purpleAccent,
                                   fontFamily: 'monospace',
                                 ),
                               ),
@@ -536,25 +615,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           Slider(
                             value: _currentSpeed,
                             min: 1.0,
-                            max: 255.0,
-                            divisions: 254,
+                            max: 15.0,
+                            divisions: 14,
                             label: "节拍: ${_currentSpeed.toInt()}",
                             activeColor: bleWatch.isServicesReady
-                                ? Colors.pinkAccent
+                                ? Colors.purpleAccent
                                 : Colors.grey,
                             onChanged: bleWatch.isServicesReady
                                 ? (value) {
-                                    setState(() {
-                                      _currentSpeed = value;
-                                    });
-                                    _sendFullFrame(bleWatch,
-                                        mode: 0x03,
-                                        speed: _currentSpeed.toInt());
+                                    setState(() => _currentSpeed = value);
+                                    _updateWaveInterval(bleWatch);
                                   }
                                 : null,
                           ),
                           const Text(
-                            "提示：数值越小节奏越快，模拟真实心跳「咚-咚」律动",
+                            "提示：1=极速扩散，15=最缓呼吸",
                             style:
                                 TextStyle(fontSize: 11, color: Colors.grey),
                           ),
@@ -562,6 +637,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                ],
                 const SizedBox(height: 30),
 
                 // ----------------- 4. 上行反馈信息看板 -----------------
@@ -632,7 +708,18 @@ class _HomeScreenState extends State<HomeScreen> {
       onPressed: ble.isServicesReady
           ? () {
               setState(() => _currentColor = colorCode);
-              _sendFullFrame(ble, color: colorCode);
+              if (_activeMode == 0x01) {
+                // Mode 1: 保留当前 LED 开关掩码，仅切换颜色
+                int mask = 0;
+                for (int i = 0; i < 8; i++) {
+                  if (_ledStates[i]) mask |= (1 << _ledBitPositions[i]);
+                }
+                _sendFullFrame(ble, mode: 0x01, color: colorCode, speed: mask);
+              } else if (_activeMode == 0x03) {
+                // Mode 3: 仅更新颜色状态，波浪 Timer 会在下一拍自动使用新颜色
+              } else {
+                _sendFullFrame(ble, color: colorCode);
+              }
             }
           : null,
       style: ElevatedButton.styleFrom(
@@ -688,6 +775,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: enabled
           ? () {
+              _stopWaveBreathing();
               setState(() {
                 _activeMode = 0x01;
                 _ledStates[index] = !isOn;
@@ -743,5 +831,125 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     _sendFullFrame(ble, mode: 0x01, speed: mask);
+  }
+
+  // ================================================================
+  // Mode 3 中心对称波浪呼吸灯 — nibble 分拆亮度调制算法
+  //
+  // 核心思路：每 tick 发送单帧 Mode 0x03，
+  //   Byte 3 高 4-bit = 内群亮度 (0~15)，低 4-bit = 外群亮度 (0~15)
+  //   FPGA my_ws2812 按 LED 分组使用对应 nibble 驱动脉宽，
+  //   单帧无竞态，内/外 8 灯同时以不同亮度呼吸。
+  // ================================================================
+
+  /// 启动波浪呼吸灯
+  void _startWaveBreathing(BleController ble) {
+    _stopWaveBreathing();
+    _wavePhase = 0.0;
+    _innerIntensity = 0.0;
+    _outerIntensity = 0.0;
+    _innerBrightnessValue = 0;
+    _outerBrightnessValue = 0;
+    _onWaveTick(ble); // 立即发送第一组帧
+    _updateWaveInterval(ble);
+  }
+
+  /// 停止波浪呼吸灯并清理资源
+  void _stopWaveBreathing() {
+    _waveTimer?.cancel();
+    _waveTimer = null;
+  }
+
+  /// 每次定时器触发：计算正弦波 4-bit 亮度 → nibble 打包 → 发送单帧 Mode 0x03
+  ///   Byte 3 = (inner_4bit << 4) | outer_4bit,  Byte 4 = speed
+  ///   单帧取代旧版双帧竞态，内/外群亮度独立且无闪烁
+  void _onWaveTick(BleController ble) {
+    final phaseRad = _wavePhase * 2 * pi;
+
+    // 内群亮度 = cos² 映射到 [0, 15] 4-bit（相位 0 时峰值 15，相位 0.5 时谷值 0）
+    final innerRaw = (cos(phaseRad) + 1.0) / 2.0; // [0, 1]
+    final inner4 = (innerRaw * 15.0).round().clamp(0, 15);
+
+    // 外群亮度 = 反相（相位差 π），内群亮时外群暗，反之亦然
+    final outerRaw = (cos(phaseRad + pi) + 1.0) / 2.0; // [0, 1]
+    final outer4 = (outerRaw * 15.0).round().clamp(0, 15);
+
+    // ★ nibble 打包：高 4-bit = 内群，低 4-bit = 外群 → 单帧发送 ★
+    final packedBrightness = (inner4 << 4) | outer4;
+    ble.sendProtocolCmd(0x03, _currentColor, packedBrightness, _currentSpeed.toInt());
+
+    setState(() {
+      _innerIntensity = innerRaw;
+      _outerIntensity = outerRaw;
+      _innerBrightnessValue = inner4; // 4-bit 实际值 (0~15)
+      _outerBrightnessValue = outer4;
+
+      // 推进相位：step=0.03，约 33 tick 完成一个完整呼吸周期
+      _wavePhase += 0.03;
+      if (_wavePhase >= 1.0) _wavePhase -= 1.0;
+    });
+  }
+
+  /// 根据滑块值重新设定波浪定时器间隔
+  /// Speed 1（极速）= 60ms 间隔, Speed 15（最缓）= 900ms 间隔
+  void _updateWaveInterval(BleController ble) {
+    _waveTimer?.cancel();
+    final ms = (_currentSpeed * 60).toInt().clamp(60, 900);
+    _waveTimer = Timer.periodic(Duration(milliseconds: ms), (_) => _onWaveTick(ble));
+  }
+
+  /// 构建波浪可视化预览中的单个列指示器（显示实际亮度值）
+  Widget _buildWaveColumn(String label, double intensity, int brightnessValue) {
+    final waveColor = _getCurrentWaveColor();
+    return Column(
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          width: 40,
+          height: 56,
+          decoration: BoxDecoration(
+            color: waveColor.withOpacity(intensity.clamp(0.0, 1.0)),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: waveColor.withOpacity(0.5),
+              width: 1.5,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 9, color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          "$brightnessValue/15",
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: waveColor.withOpacity(0.8),
+            fontFamily: 'monospace',
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 获取当前全局颜色对应的 Flutter Color
+  Color _getCurrentWaveColor() {
+    switch (_currentColor) {
+      case 0x01:
+        return Colors.red;
+      case 0x03:
+        return Colors.blue;
+      default: // 0x02
+        return Colors.green;
+    }
+  }
+
+  @override
+  void dispose() {
+    _stopWaveBreathing();
+    super.dispose();
   }
 }

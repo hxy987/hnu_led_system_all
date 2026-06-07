@@ -1,6 +1,6 @@
 # hnu_led_system_all
 
-湖南大学 CSEE EC C301 - 综合选题3：无线智能 RGB LED 控制系统（V2）
+湖南大学 CSEE EC C301 - 综合选题3：无线智能 RGB LED 控制系统（V3）
 
 ## 项目简介
 
@@ -8,6 +8,7 @@
 
 - **手机端**：Flutter 应用，通过 BLE 蓝牙发送 5 字节自定义协议指令
 - **FPGA 端**：Verilog 硬件设计，通过 UART 接收指令并驱动 WS2812 LED 灯带
+- **V3 新特性**：Mode 3 Byte 3 高低 4-bit nibble 分拆，内/外群 LED 独立亮度控制，单帧无竞态
 
 ## 项目结构
 
@@ -27,21 +28,37 @@ hnu_led_system_all/
 │   ├── my_ws2812.v             # WS2812 单线驱动（8-LED GRB）
 │   ├── pro1.v                  # 早期独立演示顶层（参考用）
 │   └── experiements5.qpf       # Quartus 工程文件
-├── problem.txt                 # 最新需求文档（V2 重构规格）
+├── problem.txt                 # V3 nibble 分拆需求规格
 └── CLAUDE.md                   # 项目开发指南
 ```
 
-## 通信协议（V2 — 5 字节帧）
+## 通信协议（V3 — 5 字节帧，nibble 分拆亮度）
 
 | 字节 | 字段 | 说明 |
 |------|------|------|
 | 0 | `0x5A` | 帧头（魔术字节） |
 | 1 | Mode | `0x01` 独立灯珠 / `0x02` 流水灯 / `0x03` 呼吸灯 |
 | 2 | Color | `0x01` 红 / `0x02` 绿 / `0x03` 蓝 |
-| 3 | Brightness | 全局 PWM 亮度 0~255 |
-| 4 | Speed/Param | Mode 1: LED 掩码 / Mode 2&3: 速度参数 1~15 |
+| 3 | Brightness | Mode 1&2: 全局 PWM 亮度 0~255（FPGA 取高 4-bit） |
+|   |            | **Mode 3: `[7:4]`=内群亮度(0~15), `[3:0]`=外群亮度(0~15)** |
+| 4 | Speed/Param | Mode 1: LED 掩码 / Mode 2: 流水速度 / Mode 3: 节拍速度 1~15 |
 
 FPGA 按键反馈：`0xC3`（通过 BLE NOTIFY 上报至 App）
+
+### Mode 3 nibble 分拆架构（V3 核心升级）
+
+```
+Flutter 单帧/拍                    FPGA my_ws2812 双亮度端口
+┌──────────────────────┐      ┌──────────────────────────────┐
+│ [0x5A,0x03,clr,br,sp]│ ───→ │ inner_brightness = br[7:4]  │
+│ br[7:4] = inner 0~15 │      │ outer_brightness = br[3:0]  │
+│ br[3:0] = outer 0~15 │      │                              │
+│ sp = 节拍速度 1~15   │      │ LED 2,3,6,7 ← inner 亮度    │
+└──────────────────────┘      │ LED 1,4,5,8 ← outer 亮度    │
+                              └──────────────────────────────┘
+```
+
+**关键收益**：单帧同时携带内/外群亮度，彻底消除旧版双帧竞态导致的闪烁 bug。
 
 ### LED 物理位映射
 
@@ -97,8 +114,10 @@ Row 2: [Btn5] [Btn6] [Btn7] [Btn8]   ← 外左 → 外右
 - 全局颜色和亮度可叠加控制
 
 ### 模式三：中心对称波浪呼吸灯（Mode `0x03`）
-- **App 驱动**的中心对称波浪算法：内列（Col 2,3）与外列（Col 1,4）以 cos/sin 180° 反相呼吸
-- 视觉波浪预览 UI（4 列实时强度指示器）
+- **App 驱动 + FPGA 双亮度端口**：内列（Col 2,3 / LED 2,3,6,7）与外列（Col 1,4 / LED 1,4,5,8）以 180° 反相呼吸
+- **nibble 分拆**：Byte 3 高 4-bit 控制内群亮度，低 4-bit 控制外群亮度（各 0~15）
+- **单帧无竞态**：每拍仅发一帧 Mode 0x03，FPGA my_ws2812 按 LED 分组自动应用对应亮度
+- 视觉波浪预览 UI（4 列实时强度指示器，显示 0~15 实际 4-bit 值）
 - 节拍调节滑块（1=极速扩散，15=最缓呼吸）
 - 全局颜色可切换（波浪帧自动读取）
 - 呼吸模式下亮度滑块锁定
@@ -109,20 +128,28 @@ Row 2: [Btn5] [Btn6] [Btn7] [Btn8]   ← 外左 → 外右
 - 帧同步看门狗自动恢复
 - 暗黑科技风 UI（AnimatedContainer 动态视觉效果）
 
-## FPGA 架构（数据流水线）
+## FPGA 架构（数据流水线，V3 双亮度端口）
 
 ```
 UART RX ──────→ UART TX
     ↓               ↑
 tx_rx_arbiter (Rx 绝对优先级仲裁)
     ↓
-cmd_parser (5 字节帧 FSM：IDLE → MAGIC → COLOR → BRIGHTNESS → PARAM)
+cmd_parser (5 字节帧 FSM：WAIT_HEADER → GET_MODE → GET_COLOR → GET_BRIGHT → GET_PARAM)
     ↓
-effect_generator (多模式效果计算)
+effect_generator (多模式效果计算 → inner_brightness + outer_brightness 双输出)
     ↓
-my_ws2812 (WS2812 单线时序驱动)
+my_ws2812 (双亮度端口：内群/外群独立脉宽驱动)
     ↓
 led_out → WS2812 LED 灯带
+```
+
+### Mode 0x03 nibble 解包路径
+
+```
+ctrl_brightness[7:0]
+    ├── [7:4] → inner_brightness → my_ws2812 内群 (LED 2,3,6,7)
+    └── [3:0] → outer_brightness → my_ws2812 外群 (LED 1,4,5,8)
 ```
 
 ## 快速开始
@@ -153,3 +180,24 @@ flutter run
 ### FPGA
 - Intel Quartus Prime 24.1std.0 Lite Edition（或更新版本）
 - USB Blaster 下载器
+
+## 变更日志
+
+### V3.0 — nibble 分拆双亮度端口（当前版本）
+
+**Bug 修复**：Mode 3 中心对称波浪呼吸灯内群（中间 4 颗 LED）闪烁问题。
+
+**根因**：旧版每拍发送两帧 Mode 0x01（内群帧 + 外群帧），两帧到达 FPGA 存在 ~435μs 时间差，后帧覆盖前帧的 `led_data_in10` 掩码，导致内群仅在帧间瞬间可见（<1% 占空比），表现为持续闪烁。
+
+**修改**：
+
+| 文件 | 变更 |
+|------|------|
+| `my_ws2812.v` | `led_brightness` 单端口 → `inner_brightness` + `outer_brightness` 双端口；Mode 0 按 LED 分组应用独立亮度 |
+| `effect_generator.v` | 输出双亮度；Mode 0x03 解包 `ctrl_brightness[7:4]`→inner, `[3:0]`→outer；`led_data_in10=0xFF` |
+| `top_project.v` | 路由 `w_inner_brightness` + `w_outer_brightness` 双线 |
+| `main.dart` | Mode 3 单帧发包 + nibble 打包 `(inner4<<4)\|outer4`；移除旧双帧竞态逻辑 |
+
+### V2.0 — 5 字节协议 + 中心对称波浪呼吸灯
+
+### V1.0 — 初版：3 字节协议 + 基础 BLE 双向通信
