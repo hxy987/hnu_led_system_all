@@ -160,8 +160,9 @@ class BleController extends ChangeNotifier {
     }
   }
 
-  // 3. 封装发送自定义 5 字节协议数据包的代码 (V2)
+  // 3. 封装发送自定义 5 字节协议数据包的代码 (V4)
   //    帧格式：[0x5A, mode, color, brightness, speed]
+  //    Mode 0x01=静态灯珠, 0x02=流水灯, 0x03=呼吸灯, 0x04=S型追逐
   void sendProtocolCmd(int mode, int color, int brightness, int speed) async {
     // ============================================================
     // 【诊断日志】打印发送前的所有关键状态

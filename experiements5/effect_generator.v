@@ -19,7 +19,11 @@ module effect_generator (
     output reg  [7:0]   led_data_in32,   // 交付给驱动的 data32
     output reg          driver_mode,     // 驱动的双模式控制线 (0/1)
     output reg  [3:0]   inner_brightness,// 内群亮度 (LED 2,3,6,7) 4-bit
-    output reg  [3:0]   outer_brightness // 外群亮度 (LED 1,4,5,8) 4-bit
+    output reg  [3:0]   outer_brightness,// 外群亮度 (LED 1,4,5,8) 4-bit
+
+    // V4: Board 2 独立数据输出 (S型追逐双板驱动)
+    output reg  [7:0]   led_data_in10_b2,// Board 2 低组数据
+    output reg  [7:0]   led_data_in32_b2 // Board 2 高组数据
 );
 
     //---------------------------------------------------------
@@ -56,39 +60,96 @@ module effect_generator (
     end
 
     //---------------------------------------------------------
-    // 3. 流水灯动画效果生成器子系统 (Mode = 8'h02)
+    // 3. 大环流水灯动画 — 双板联动 (Mode = 8'h02)
+    //    V4 Refactor: App 端 Timer 持续流式发送 Byte 4 = 当前步索引(0~15),
+    //    FPGA 仅做组合逻辑译码, 不再自主动画.
+    //
+    //    追逐路径 (16步 Grand Ring):
+    //      Board 1 Row 1 (右→左): LED 1→2→3→4  (bit[4][5][6][7])
+    //      Board 1 Row 2 (左→右): LED 5→6→7→8  (bit[3][2][1][0])
+    //      → 桥接到 Board 2 →
+    //      Board 2 Row 1 (左→右): LED 1→2→3→4  (bit[4][5][6][7])
+    //      Board 2 Row 2 (右→左): LED 8→7→6→5  (bit[0][1][2][3])
+    //      → 循环回 Board 1 Step 0
     //---------------------------------------------------------
-    reg [7:0]   water_speed_cnt;
-    reg [2:0]   water_led_idx;
+    reg [7:0] water_data_b1;
+    reg [7:0] water_data_b2;
+    always @(*) begin
+        case (ctrl_param[3:0])  // 仅低4位有效, App 保证 step ∈ [0,15]
+            // ── Board 1: LED 1→2→3→4→5→6→7→8 ──
+            4'd0:  begin water_data_b1 = 8'b0001_0000; water_data_b2 = 8'b0000_0000; end
+            4'd1:  begin water_data_b1 = 8'b0010_0000; water_data_b2 = 8'b0000_0000; end
+            4'd2:  begin water_data_b1 = 8'b0100_0000; water_data_b2 = 8'b0000_0000; end
+            4'd3:  begin water_data_b1 = 8'b1000_0000; water_data_b2 = 8'b0000_0000; end
+            4'd4:  begin water_data_b1 = 8'b0000_1000; water_data_b2 = 8'b0000_0000; end
+            4'd5:  begin water_data_b1 = 8'b0000_0100; water_data_b2 = 8'b0000_0000; end
+            4'd6:  begin water_data_b1 = 8'b0000_0010; water_data_b2 = 8'b0000_0000; end
+            4'd7:  begin water_data_b1 = 8'b0000_0001; water_data_b2 = 8'b0000_0000; end
+            // ── Board 2: LED 1→2→3→4→8→7→6→5 ──
+            4'd8:  begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0001_0000; end
+            4'd9:  begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0010_0000; end
+            4'd10: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0100_0000; end
+            4'd11: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b1000_0000; end
+            4'd12: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0000_0001; end
+            4'd13: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0000_0010; end
+            4'd14: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0000_0100; end
+            4'd15: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0000_1000; end
+            default: begin water_data_b1 = 8'b0000_0000; water_data_b2 = 8'b0000_0000; end
+        endcase
+    end
+
+    //---------------------------------------------------------
+    // 3.5 S型往返追逐动画引擎 (Mode = 8'h04)
+    //    追逐路径 (16步):
+    //      Step  0~ 3: Board 1 LED 4→3→2→1 (bit[7][6][5][4])
+    //      Step  4~11: Board 2 LED 1→2→3→4→5→6→7→8 (bit[4][5][6][7][3][2][1][0])
+    //      Step 12~15: Board 1 LED 8→7→6→5 (bit[0][1][2][3])
+    //      → 循环回 Step 0
+    //---------------------------------------------------------
+    reg  [3:0]  chase_step;          // 追逐当前步 (0~15)
+    reg  [7:0]  chase_speed_cnt;     // 速度分频计数器
 
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
-            water_speed_cnt <= 8'd0;
-            water_led_idx   <= 3'd0;
-        end else if (step_pulse && (ctrl_mode == 8'h02)) begin
-            // ctrl_param 作为速度衰减器因子：值越小，流水越快
-            if (water_speed_cnt >= ctrl_param) begin
-                water_speed_cnt <= 8'd0;
-                water_led_idx   <= (water_led_idx == 3'd7) ? 3'd0 : water_led_idx + 3'd1;
+            chase_step      <= 4'd0;
+            chase_speed_cnt <= 8'd0;
+        end else if (step_pulse && (ctrl_mode == 8'h04)) begin
+            // ctrl_param 作为速度衰减因子：值越小，追逐越快
+            if (chase_speed_cnt >= ctrl_param) begin
+                chase_speed_cnt <= 8'd0;
+                chase_step      <= (chase_step == 4'd15) ? 4'd0 : chase_step + 4'd1;
             end else begin
-                water_speed_cnt <= water_speed_cnt + 8'd1;
+                chase_speed_cnt <= chase_speed_cnt + 8'd1;
             end
         end
     end
 
-    // 根据移位索引转为一热码 (流水灯数据格式)
-    reg [7:0] water_data_out;
+    // 追逐步 → 双板一热码映射 (组合逻辑)
+    reg [7:0] chase_data_b1;
+    reg [7:0] chase_data_b2;
     always @(*) begin
-        case (water_led_idx)
-            3'd0: water_data_out = 8'b00010000;
-            3'd1: water_data_out = 8'b00100000;
-            3'd2: water_data_out = 8'b01000000;
-            3'd3: water_data_out = 8'b10000000;
-            3'd4: water_data_out = 8'b00001000;
-            3'd5: water_data_out = 8'b00000100;
-            3'd6: water_data_out = 8'b00000010;
-            3'd7: water_data_out = 8'b00000001;
-            default: water_data_out = 8'b00010000;
+        case (chase_step)
+            // --- Board 1 段: LED 4→3→2→1 (bit[7][6][5][4]) ---
+            4'd0:  begin chase_data_b1 = 8'b1000_0000; chase_data_b2 = 8'b0000_0000; end
+            4'd1:  begin chase_data_b1 = 8'b0100_0000; chase_data_b2 = 8'b0000_0000; end
+            4'd2:  begin chase_data_b1 = 8'b0010_0000; chase_data_b2 = 8'b0000_0000; end
+            4'd3:  begin chase_data_b1 = 8'b0001_0000; chase_data_b2 = 8'b0000_0000; end
+            // --- Board 2 段: LED 1→2→3→4→5→6→7→8 (bit[4][5][6][7][3][2][1][0]) ---
+            4'd4:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0001_0000; end
+            4'd5:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0010_0000; end
+            4'd6:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0100_0000; end
+            4'd7:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b1000_0000; end
+            4'd8:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0000_1000; end
+            4'd9:  begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0000_0100; end
+            4'd10: begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0000_0010; end
+            4'd11: begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0000_0001; end
+            // --- Board 1 段: LED 8→7→6→5 (bit[0][1][2][3]) ---
+            4'd12: begin chase_data_b1 = 8'b0000_0001; chase_data_b2 = 8'b0000_0000; end
+            4'd13: begin chase_data_b1 = 8'b0000_0010; chase_data_b2 = 8'b0000_0000; end
+            4'd14: begin chase_data_b1 = 8'b0000_0100; chase_data_b2 = 8'b0000_0000; end
+            4'd15: begin chase_data_b1 = 8'b0000_1000; chase_data_b2 = 8'b0000_0000; end
+            // --- 安全默认 ---
+            default: begin chase_data_b1 = 8'b0000_0000; chase_data_b2 = 8'b0000_0000; end
         endcase
     end
 
@@ -146,47 +207,67 @@ module effect_generator (
     //    Mode 0x01: 独立灯珠控制 — ctrl_param = LED 位掩码
     //    Mode 0x02: 流水灯 — ctrl_param = 速度阻尼因子
     //    Mode 0x03: 心跳呼吸 — ctrl_param = 节拍速度，亮度由波形发生器驱动
+    //    Mode 0x04: S型往返追逐 — ctrl_param = 追逐速度, 双板独立输出
     //    default:   保持上一组寄存器值不变
     //---------------------------------------------------------
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
-            led_data_in10 <= 8'd0;
-            led_data_in32 <= 8'd0;
-            driver_mode   <= 1'b0;
+            led_data_in10   <= 8'd0;
+            led_data_in32   <= 8'd0;
+            led_data_in10_b2<= 8'd0;
+            led_data_in32_b2<= 8'd0;
+            driver_mode     <= 1'b0;
             inner_brightness <= 4'd10;
             outer_brightness <= 4'd10;
         end else begin
             case (ctrl_mode)
                 8'h01: begin
                     // 独立灯珠控制：全局颜色 + 手动亮度 + LED 掩码
-                    // 内/外群亮度相同（均取 Byte 3 高 4-bit），向后兼容
+                    //   Board 1 & Board 2 镜像显示，同步点亮相同灯珠
                     driver_mode     <= 1'b0;
                     led_data_in10   <= ctrl_param;          // LED 位掩码
                     led_data_in32   <= color_data32;        // 解码后的颜色位域
-                    inner_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit
-                    outer_brightness <= ctrl_brightness[7:4]; // 同内群
+                    led_data_in10_b2<= ctrl_param;          // Board 2 镜像 Board 1
+                    led_data_in32_b2<= color_data32;
+                    inner_brightness <= ctrl_brightness[7:4];
+                    outer_brightness <= ctrl_brightness[7:4];
                 end
 
                 8'h02: begin
-                    // 自动流水灯效果：全局颜色 + 手动亮度 + 流水速度
-                    // 内/外群亮度相同（均取 Byte 3 高 4-bit），向后兼容
+                    // 大环流水灯：App 流式发送步索引, 双板独立一热码输出
+                    //   ctrl_param[3:0] = 当前步索引 (0~15, App Timer 驱动)
+                    //   Board 1 数据 → led_data_in10, Board 2 数据 → led_data_in10_b2
                     driver_mode     <= 1'b0;
-                    led_data_in10   <= water_data_out;      // 一热码流水数据
+                    led_data_in10   <= water_data_b1;       // Board 1 一热码
                     led_data_in32   <= color_data32;        // 解码后的颜色位域
-                    inner_brightness <= ctrl_brightness[7:4]; // 8-bit → 4-bit
-                    outer_brightness <= ctrl_brightness[7:4]; // 同内群
+                    led_data_in10_b2<= water_data_b2;       // Board 2 一热码
+                    led_data_in32_b2<= color_data32;        // 全局颜色
+                    inner_brightness <= ctrl_brightness[7:4];// 统一亮度 (高 nibble)
+                    outer_brightness <= ctrl_brightness[7:4];
                 end
 
                 8'h03: begin
                     // 中心对称波浪呼吸灯：Byte 3 高/低 nibble 分拆内/外群亮度
-                    //   Byte 3[7:4] = inner_brightness (0~15)
-                    //   Byte 3[3:0] = outer_brightness (0~15)
-                    // 全部 8 灯同时点亮，亮度差异由 nibble 值控制
                     driver_mode     <= 1'b0;
                     led_data_in10   <= 8'hFF;               // 全部 8 灯珠点亮
                     led_data_in32   <= color_data32;        // 解码后的颜色位域
-                    inner_brightness <= ctrl_brightness[7:4]; // 高 nibble → 内群
-                    outer_brightness <= ctrl_brightness[3:0]; // 低 nibble → 外群
+                    led_data_in10_b2<= 8'd0;                // Board 2 全灭 (呼吸灯仅Board 1)
+                    led_data_in32_b2<= 8'd0;
+                    inner_brightness <= ctrl_brightness[7:4];
+                    outer_brightness <= ctrl_brightness[3:0];
+                end
+
+                8'h04: begin
+                    // S型往返追逐：双板独立一热码输出
+                    //   ctrl_param = 追逐速度 (1~15, 值小越快)
+                    //   Board 1 数据 → led_data_in10, Board 2 数据 → led_data_in10_b2
+                    driver_mode     <= 1'b0;
+                    led_data_in10   <= chase_data_b1;       // Board 1 一热码
+                    led_data_in32   <= color_data32;        // 全局颜色
+                    led_data_in10_b2<= chase_data_b2;       // Board 2 独立S型追逐数据
+                    led_data_in32_b2<= color_data32;        // 全局颜色
+                    inner_brightness <= ctrl_brightness[7:4];// 追逐光点统一亮度
+                    outer_brightness <= ctrl_brightness[7:4];
                 end
 
                 // default: 保持上一组寄存器值不变

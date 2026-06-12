@@ -69,8 +69,8 @@ module cmd_parser (
             bright_buf     <= 8'd0;
             ctrl_mode      <= 8'h01;        // 默认模式：独立灯珠控制
             ctrl_color     <= 8'h02;        // 默认颜色：绿色 (0x02=G)
-            ctrl_brightness<= 8'h80;        // 默认亮度：中位 (~50%)
-            ctrl_param     <= 8'h00;        // 默认参数：无LED点亮
+            ctrl_brightness<= 8'hF0;        // 默认亮度：高亮 (~94%)
+            ctrl_param     <= 8'hFF;        // 默认参数：全部 8 路 LED 点亮
         end else begin
             // 看门狗超时保护：非空闲状态超过1ms无数据 → 强制复位
             if (wd_cnt == WD_TIMEOUT && state != ST_WAIT_HEADER) begin

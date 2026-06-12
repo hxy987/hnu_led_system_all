@@ -15,7 +15,7 @@ module my_ws2812 (
     localparam T1H_MAX   = 6'd45;        // 1码高电平时间 (900ns)
     localparam T0H_MAX   = 6'd15;        // 0码高电平时间 (300ns)
     localparam BIT_TOTAL = 6'd62;        // 1个比特的总时钟周期数 (1.25us)
-    localparam RST_COUNT = 16'd4500;     // 复位低电平时间 (90us >= 80us)
+    localparam RST_COUNT = 16'd25000;    // 复位低电平时间 (500us >> 80us, 充足裕度防首次烧录不亮)
 
     // ============================================================
     // 2. 内部寄存器：帧起始锁存

@@ -53,17 +53,24 @@ set_global_assignment -name VERILOG_FILE my_ws2812.v
 set_location_assignment PIN_L1 -to key
 set_location_assignment PIN_E1 -to clk
 set_location_assignment PIN_T2 -to led_out
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to led_out
 set_location_assignment PIN_L2 -to rst_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rst_n
 set_global_assignment -name VERILOG_FILE uart_tx.v
 set_global_assignment -name VERILOG_FILE uart_rx.v
 set_global_assignment -name VERILOG_FILE cmd_parser.v
 set_global_assignment -name VERILOG_FILE effect_generator.v
 set_global_assignment -name VERILOG_FILE tx_rx_arbiter.v
 set_global_assignment -name VERILOG_FILE top_project.v
+set_global_assignment -name VERILOG_FILE diag_led_test.v
 set_location_assignment PIN_B11 -to uart_rx
 set_location_assignment PIN_D6 -to uart_tx
 set_location_assignment PIN_K1 -to key_feedback
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_T3 -to led_out_b2
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to led_out_b2
+set_location_assignment PIN_P1 -to feedback_b2
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to feedback_b2
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

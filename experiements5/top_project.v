@@ -15,7 +15,9 @@ module top_project (
     input               key_feedback,  // 用户按键触发向手机发送状态反馈 [cite: 459]
     
     // 物理单线串行彩灯输出接口
-    output              led_out        // 物理引脚：WS2812数据输出 (PIN_T2) [cite: 402]
+    output              led_out,       // 物理引脚：WS2812 Board 1 数据输出 (PIN_T2) [cite: 402]
+    output              led_out_b2,    // V4 物理引脚：WS2812 Board 2 数据输出 (PIN_T3)
+    input               feedback_b2    // V4 Board 2 末级环回监测 (PIN_P1)
 );
 
     // 内部连线网络定义
@@ -35,6 +37,8 @@ module top_project (
     
     wire [7:0]  w_led_data_in10;
     wire [7:0]  w_led_data_in32;
+    wire [7:0]  w_led_data_in10_b2; // V4: Board 2 数据总线
+    wire [7:0]  w_led_data_in32_b2;
     wire        w_driver_mode;
     wire [3:0]  w_inner_brightness;
     wire [3:0]  w_outer_brightness;
@@ -117,23 +121,39 @@ module top_project (
         .ctrl_param(w_ctrl_param),
         .led_data_in10(w_led_data_in10), // 生成直接交付给底层驱动的数据流
         .led_data_in32(w_led_data_in32),
+        .led_data_in10_b2(w_led_data_in10_b2), // V4: Board 2 数据流
+        .led_data_in32_b2(w_led_data_in32_b2),
         .driver_mode(w_driver_mode),
         .inner_brightness(w_inner_brightness),
         .outer_brightness(w_outer_brightness)
     );
 
     // =================================================================
-    // 6. 底层串行硬件单线驱动模块（逆向重构的自定义 my_ws2812 核心） 
+    // 6. 底层串行硬件单线驱动模块 #1 — Board 1 (板载 8 LED)
     // =================================================================
-    my_ws2812 u_hardware_driver (
+    my_ws2812 u_hardware_driver_b1 (
         .clk(clk),
         .rst_n(rst_n),
         .inner_brightness(w_inner_brightness),
-        .outer_brightness(w_outer_brightness), // 动态全局亮度，来自effect_generator模式0x06调节
-        .led_data_in10(w_led_data_in10), // 动态接收来自效果发生器的数据源
+        .outer_brightness(w_outer_brightness),
+        .led_data_in10(w_led_data_in10),
         .led_data_in32(w_led_data_in32),
         .mode(w_driver_mode),
-        .led_out(led_out)                // 直接点亮级联物理灯带！ [cite: 529]
+        .led_out(led_out)
+    );
+
+    // =================================================================
+    // 7. 底层串行硬件单线驱动模块 #2 — Board 2 (外接 PMOD 8 LED) [V4 新增]
+    // =================================================================
+    my_ws2812 u_hardware_driver_b2 (
+        .clk(clk),
+        .rst_n(rst_n),
+        .inner_brightness(w_inner_brightness),
+        .outer_brightness(w_outer_brightness),
+        .led_data_in10(w_led_data_in10_b2),
+        .led_data_in32(w_led_data_in32_b2),
+        .mode(w_driver_mode),
+        .led_out(led_out_b2)
     );
 
 endmodule
